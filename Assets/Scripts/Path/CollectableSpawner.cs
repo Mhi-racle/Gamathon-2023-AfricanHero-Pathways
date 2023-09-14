@@ -7,7 +7,7 @@ public class CollectableSpawner : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject ActiveInstance;
+    private GameObject Prefab;
 
     [SerializeField]
     private Transform Player;
@@ -16,7 +16,7 @@ public class CollectableSpawner : MonoBehaviour
     private LineRenderer Path;
 
     [SerializeField]
-    private float pathHeightOffset = 1.2f;
+    private float pathHeightOffset = 1.25f;
 
     [SerializeField]
     private float SpawnHeightOffset = 1.5f;
@@ -35,6 +35,13 @@ public class CollectableSpawner : MonoBehaviour
 
     private void Start()
     {
+        SpawnNewObject();
+    }
+
+    private void SpawnNewObject()
+    {
+  
+       
         if (DrawPathCoroutine != null)
         {
             StopCoroutine(DrawPathCoroutine);
@@ -42,15 +49,14 @@ public class CollectableSpawner : MonoBehaviour
 
         DrawPathCoroutine = StartCoroutine(DrawPathToCollectable());
     }
-
     IEnumerator DrawPathToCollectable()
     {
         WaitForSeconds wait = new WaitForSeconds(PathUpdateSpeed);
         NavMeshPath path = new NavMeshPath();
 
-        while(ActiveInstance != null)
+        while(Prefab != null)
         {
-            if (NavMesh.CalculatePath(Player.position, ActiveInstance.transform.position, NavMesh.AllAreas, path))
+            if (NavMesh.CalculatePath(Player.position, Prefab.transform.position, NavMesh.AllAreas, path))
             {
                 Path.positionCount = path.corners.Length;
 

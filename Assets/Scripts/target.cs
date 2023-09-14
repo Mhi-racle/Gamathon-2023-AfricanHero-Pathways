@@ -8,7 +8,8 @@ public class target : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Debug.Log("Target Reached");
+            GameManager.Instance.TargetReached();
+            Destroy(gameObject);
         }
     }
 }

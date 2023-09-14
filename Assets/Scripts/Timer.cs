@@ -14,7 +14,7 @@ public class Timer : MonoBehaviour
 
         //timerText.gameObject.SetActive(false);
         isCounting = false;
-        timeLeft = 50;
+        
     }
 
     // Update is called once per frame
