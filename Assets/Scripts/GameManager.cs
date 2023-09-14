@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour
     public GameObject FailMenu;
     public GameObject MainCanvas;
 
-    public Timer Timer;
     bool isPaused = false;
+
+    public AudioClip congratulatorySound;
+    public AudioSource audioSource;
 
     private void Awake()
     {
@@ -79,16 +81,20 @@ public class GameManager : MonoBehaviour
         MainCanvas.SetActive(false);
         FailMenu.SetActive(true);
         FailMenu.GetComponent<Animator>().SetTrigger("gameOver");
-        Timer.gameObject.SetActive(false);
+
+        gameObject.GetComponent<Timer>().enabled = false;
+        gameObject.GetComponent<RotateBlock>().enabled = false;
+
     }
 
     public void TargetReached()
     {
+        audioSource.PlayOneShot(congratulatorySound);
         WinMenu.SetActive(true);
         MainCanvas.SetActive(false);
         WinMenu.GetComponent<Animator>().SetTrigger("gameOver");
         Debug.Log("Target reached");
-        Time.timeScale = 0;
-
+        gameObject.GetComponent<Timer>().enabled = false;
+        gameObject.GetComponent<RotateBlock>().enabled = false;
     }
 }
