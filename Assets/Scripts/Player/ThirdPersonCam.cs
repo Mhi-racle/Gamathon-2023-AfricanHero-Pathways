@@ -1,0 +1,43 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ThirdPersonCam : MonoBehaviour
+{
+    [Header("Transforms")]
+
+    public Transform orientation;
+    public Transform player;
+    public Transform playerObj;
+
+    [Header("Rigidbody")]
+    public CharacterController characterController;
+
+    [Header("floats")]
+    public float rotationSpeed;
+    public FloatingJoystick floatingJoystick;
+
+    private void Start()
+    {
+        
+    }
+    private void Update()
+    {
+        //rotate orientation
+        Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
+        orientation.forward = viewDir;
+
+        //rotate player object
+        float horizontalInput = floatingJoystick.Horizontal;
+        float verticalInput = floatingJoystick.Vertical;
+
+        Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        if(inputDir != Vector3.zero)
+        {
+            playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
+        }
+    }
+
+
+}
