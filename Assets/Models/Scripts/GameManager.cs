@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     public GameObject PauseMenu;
     public GameObject WinMenu;
     public GameObject FailMenu;
+    public GameObject MainCanvas;
 
+    public Timer Timer;
     bool isPaused = false;
 
     private void Awake()
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MainCanvas.SetActive(true);
         PauseMenu.SetActive(false);
         WinMenu.SetActive(false);
         FailMenu.SetActive(false);
@@ -55,6 +58,7 @@ public class GameManager : MonoBehaviour
     }
     public void ResumeGame()
     {
+        MainCanvas.SetActive(true);
         isPaused = false;
         PauseMenu.SetActive(false);
         PauseMenu.GetComponent<Animator>().SetBool("paused", false);
@@ -63,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        MainCanvas.SetActive(false);
         isPaused = true;
         PauseMenu.SetActive(true);
         PauseMenu.GetComponent<Animator>().SetBool("paused", true);
@@ -71,17 +76,19 @@ public class GameManager : MonoBehaviour
     public void TimeUp()
     {
         Debug.Log("Time is Up");
-        Time.timeScale = 0;
+        MainCanvas.SetActive(false);
         FailMenu.SetActive(true);
         FailMenu.GetComponent<Animator>().SetTrigger("gameOver");
+        Timer.gameObject.SetActive(false);
     }
 
     public void TargetReached()
     {
         WinMenu.SetActive(true);
-      
+        MainCanvas.SetActive(false);
         WinMenu.GetComponent<Animator>().SetTrigger("gameOver");
         Debug.Log("Target reached");
+        Time.timeScale = 0;
 
     }
 }
