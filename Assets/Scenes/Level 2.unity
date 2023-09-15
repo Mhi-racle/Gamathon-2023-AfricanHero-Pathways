@@ -4271,6 +4271,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Level 3
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6580371995523215230, guid: 4b4709e3877f04338bc48aa47b120afa, type: 3}
     - {fileID: 2917088902167528136, guid: 4b4709e3877f04338bc48aa47b120afa, type: 3}
