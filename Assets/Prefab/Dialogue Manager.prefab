@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1343132044658251597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1343132044658251595}
+  - component: {fileID: 1343132044658251592}
+  - component: {fileID: 1343132044658251593}
+  m_Layer: 0
+  m_Name: Dialogue Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1343132044658251595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343132044658251597}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.83100003, y: 1.2960001, z: 1.506}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1343132044658251592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343132044658251597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2113310ca374b4b439e0622ac102a6de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messages:
+  - message: Hello. I am Miracle and I will be your guide. Press the SPACEBAR KEY
+      to see the tips I have for you.
+    sprite: {fileID: 0}
+  - message: To move about use the WASD keys. To shoot, aim the cursor at a ball
+      and press your left mouse button.
+    sprite: {fileID: 0}
+  - message: At full capacity you have 10 bullets and it reduces as you shoot. You
+      can see how many bullets you have at the top of your character.
+    sprite: {fileID: 0}
+  - message: Your gun automatically reloads once the bullets are finished. You are
+      vulnerable whilst it reloads so becareful.
+    sprite: {fileID: 0}
+  - message: Each level has different waves.
+    sprite: {fileID: 0}
+  - message: In each wave you would be given a mathematical equation where you would
+      be told to find X.
+    sprite: {fileID: 0}
+  - message: To pass that wave, you have to solve the equation and shoot the ball
+      which has the number of X.
+    sprite: {fileID: 0}
+  - message: Once you shoot at X, the other balls will disappear.
+    sprite: {fileID: 0}
+  - message: Shooting a wrong ball will make the balls angry and come at you faster.
+    sprite: {fileID: 0}
+  - message: Your health reduces when a ball touches you. You will die if all your
+      heart icons turn black.
+    sprite: {fileID: 0}
+  - message: Pay heed to the timer, you have to shoot at X and complete all waves
+      before the time is up.
+    sprite: {fileID: 0}
+  - message: Goodluck!
+    sprite: {fileID: 0}
+--- !u!114 &1343132044658251593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343132044658251597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a231bd832d4ec4fb688c751d59741e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actorImage: {fileID: 0}
+  messageText: {fileID: 0}
+  backgroundBox: {fileID: 0}
