@@ -52,11 +52,12 @@ public class GameManager : MonoBehaviour
     }
     public void GoHome()
     {
-        SceneManager.LoadScene("Home");
+        SceneManager.LoadScene("Main Menu");
     }
-    public void NextLevel (string nextLevel)
+    public void NextLevel (int nextLevel)
     {
-        SceneManager.LoadScene(nextLevel);
+        PlayerPrefs.SetInt("levelsUnlocked", nextLevel);
+        SceneManager.LoadScene("Level " + nextLevel);
     }
     public void ResumeGame()
     {

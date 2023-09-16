@@ -97,8 +97,10 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 3ee163dfada1e43d0b2ff5cb32ea6f87,
+    type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: c1afb36bf9a7b49c785b878c0833614c,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2797,7 +2799,7 @@ PrefabInstance:
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
@@ -2813,6 +2815,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
@@ -4138,7 +4145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 2127339914}
-  timeLeft: 30
+  timeLeft: 10
   isCounting: 0
 --- !u!114 &2115062776
 MonoBehaviour:

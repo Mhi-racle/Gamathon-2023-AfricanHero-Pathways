@@ -3132,7 +3132,7 @@ PrefabInstance:
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
@@ -3148,6 +3148,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
@@ -4455,7 +4460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 2127339914}
-  timeLeft: 30
+  timeLeft: 20
   isCounting: 0
 --- !u!114 &2115062776
 MonoBehaviour:
