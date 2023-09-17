@@ -476,7 +476,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.53483707, y: 0.000000021807935, z: -0.000000013803917, w: 0.8449552}
+  m_LocalRotation: {x: 0.53483707, y: -0.000000021807926, z: 0.000000013803912, w: 0.8449552}
   m_LocalPosition: {x: 1.54, y: 3.09, z: -0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3518,7 +3518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1588790848}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.53483707, y: 0.000000021807935, z: -0.000000013803917, w: 0.8449552}
+  m_LocalRotation: {x: 0.53483707, y: -0.000000021807926, z: 0.000000013803912, w: 0.8449552}
   m_LocalPosition: {x: 1.54, y: 3.09, z: -0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4264,6 +4264,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: level 4
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 40e120cf00c924844ad06958ffe6648d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1502877291743220047, guid: 40e120cf00c924844ad06958ffe6648d,
         type: 3}
       propertyPath: m_TagString
@@ -4571,6 +4576,7 @@ MonoBehaviour:
   MainCanvas: {fileID: 399104742}
   congratulatorySound: {fileID: 0}
   audioSource: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &2127339912
 GameObject:
   m_ObjectHideFlags: 0

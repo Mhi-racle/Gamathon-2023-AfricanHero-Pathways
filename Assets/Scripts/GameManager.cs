@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
 
         gameObject.GetComponent<Timer>().enabled = false;
         gameObject.GetComponent<RotateBlock>().enabled = false;
+        player.GetComponent<PlayerController>().enabled = false;
 
     }
 
