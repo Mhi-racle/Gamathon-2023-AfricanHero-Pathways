@@ -12,7 +12,7 @@ public class ManageLevels : MonoBehaviour
     void Start()
     {
 
-        // PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         levelsUnlocked = PlayerPrefs.GetInt("levelsUnlocked", 1);
 

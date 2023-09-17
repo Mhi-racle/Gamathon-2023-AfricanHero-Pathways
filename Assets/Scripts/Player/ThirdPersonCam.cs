@@ -15,11 +15,11 @@ public class ThirdPersonCam : MonoBehaviour
 
     [Header("floats")]
     public float rotationSpeed;
-    public FloatingJoystick floatingJoystick;
+    public FixedJoystick fixedJoystick;
 
     private void Start()
     {
-        
+        fixedJoystick = FindAnyObjectByType<FixedJoystick>();
     }
     private void Update()
     {
@@ -28,8 +28,8 @@ public class ThirdPersonCam : MonoBehaviour
         orientation.forward = viewDir;
 
         //rotate player object
-        float horizontalInput = floatingJoystick.Horizontal;
-        float verticalInput = floatingJoystick.Vertical;
+        float horizontalInput = fixedJoystick.Horizontal;
+        float verticalInput = fixedJoystick.Vertical;
 
         Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 

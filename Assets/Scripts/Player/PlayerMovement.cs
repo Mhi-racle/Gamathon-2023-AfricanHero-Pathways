@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
 
     public Animator playerAnimator;
-    public FloatingJoystick floatingJoystick;
+    //public fixedJoystick fixedJoystick;
+
+    public FixedJoystick fixedJoystick;
     public bool isWalking;
     
     Vector3 lookPos;
@@ -24,7 +26,7 @@ public class PlayerController : MonoBehaviour
     {
       
         rb = GetComponent<Rigidbody>();
-
+        fixedJoystick = FindAnyObjectByType<FixedJoystick>();
 
     }
 
@@ -39,17 +41,17 @@ public class PlayerController : MonoBehaviour
     {
         float verticalInput;
         float horizontalInput;
-        #region Standalone Inputs
+       
 
-         verticalInput = floatingJoystick.Vertical;
-         horizontalInput = floatingJoystick.Horizontal;
+         verticalInput = fixedJoystick.Vertical;
+         horizontalInput = fixedJoystick.Horizontal;
 
-        #endregion
+     
 
-        #region Mobile Inputs
-        verticalInput = Input.GetAxis("Vertical");
-         horizontalInput = Input.GetAxis("Horizontal");
-        #endregion
+        //#region Standalone Inputs
+        //verticalInput = Input.GetAxis("Vertical");
+        //horizontalInput = Input.GetAxis("Horizontal");
+        //#endregion
 
         Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
        
