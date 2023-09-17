@@ -4848,7 +4848,7 @@ PrefabInstance:
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
@@ -4864,6 +4864,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835799410085650245, guid: 4b4709e3877f04338bc48aa47b120afa,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6580371995523215230, guid: 4b4709e3877f04338bc48aa47b120afa, type: 3}
@@ -7821,8 +7826,8 @@ MonoBehaviour:
   WinMenu: {fileID: 1478922897}
   FailMenu: {fileID: 4390184866828750999}
   MainCanvas: {fileID: 399104742}
-  congratulatorySound: {fileID: 0}
-  audioSource: {fileID: 0}
+  congratulatorySound: {fileID: 8300000, guid: efbdddf49daef4bc6923f52f4f1fdd29, type: 3}
+  audioSource: {fileID: 134074747}
   player: {fileID: 266425724}
 --- !u!1 &2127339912
 GameObject:

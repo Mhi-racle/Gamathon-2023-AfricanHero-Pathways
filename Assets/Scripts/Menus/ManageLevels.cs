@@ -32,7 +32,12 @@ public class ManageLevels : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene(0);
+            goBack();
         }
+    }
+
+    public void goBack()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }

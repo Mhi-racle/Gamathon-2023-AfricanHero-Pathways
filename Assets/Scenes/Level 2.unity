@@ -3296,7 +3296,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 746d17aed7d8744a0bb60f84c573b5cd,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.61109
+      value: 0.48887202
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 746d17aed7d8744a0bb60f84c573b5cd,
         type: 3}
@@ -3311,7 +3311,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 746d17aed7d8744a0bb60f84c573b5cd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.064
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 746d17aed7d8744a0bb60f84c573b5cd,
         type: 3}
@@ -4440,7 +4440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 2127339914}
-  timeLeft: 20
+  timeLeft: 10
   isCounting: 0
 --- !u!114 &2115062776
 MonoBehaviour:
@@ -4458,8 +4458,9 @@ MonoBehaviour:
   WinMenu: {fileID: 1478922897}
   FailMenu: {fileID: 4390184866828750999}
   MainCanvas: {fileID: 399104742}
-  congratulatorySound: {fileID: 0}
-  audioSource: {fileID: 0}
+  congratulatorySound: {fileID: 8300000, guid: efbdddf49daef4bc6923f52f4f1fdd29, type: 3}
+  audioSource: {fileID: 134074747}
+  player: {fileID: 266425724}
 --- !u!1 &2127339912
 GameObject:
   m_ObjectHideFlags: 0
