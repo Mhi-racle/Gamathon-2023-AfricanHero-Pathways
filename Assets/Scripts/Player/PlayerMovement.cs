@@ -41,16 +41,16 @@ public class PlayerController : MonoBehaviour
     {
         float verticalInput;
         float horizontalInput;
-       
 
-         verticalInput = fixedJoystick.Vertical;
-         horizontalInput = fixedJoystick.Horizontal;
 
-     
+        //verticalInput = fixedJoystick.Vertical;
+        //horizontalInput = fixedJoystick.Horizontal;
+
+
 
         //#region Standalone Inputs
-        //verticalInput = Input.GetAxis("Vertical");
-        //horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxis("Horizontal");
         //#endregion
 
         Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;

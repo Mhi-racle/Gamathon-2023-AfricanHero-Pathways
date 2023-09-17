@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 
+    private GameObject mobileCanvas;
+    GameObject virtualCam;
+
     private void Awake()
     {
         Instance = this;
@@ -31,6 +34,13 @@ public class GameManager : MonoBehaviour
         FailMenu.SetActive(false);
 
         Time.timeScale = 1;
+
+        //for pc
+        mobileCanvas = GameObject.Find("For Mobile");
+        mobileCanvas.SetActive(false);
+
+        virtualCam = GameObject.Find("Virtual Camera");
+        virtualCam.GetComponent<ThirdPersonCam>().enabled = false;
 
 
     }
