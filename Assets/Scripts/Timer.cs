@@ -20,8 +20,8 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (!DialogManager.isActive)
-        //{
+        if (!DialogManager.isActive)
+        {
             timerText.gameObject.SetActive(true);
             if (!isCounting && timeLeft > 0)
             {
@@ -32,8 +32,8 @@ public class Timer : MonoBehaviour
                 timerText.text = "Time is up";
                 GameManager.Instance.TimeUp();
             }
-        
 
+        }
     }
     IEnumerator count()
     {

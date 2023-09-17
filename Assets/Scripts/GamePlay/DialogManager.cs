@@ -21,8 +21,7 @@ public class DialogManager : MonoBehaviour
         // sets the background box to be zero on start
         backgroundBox.transform.localScale = Vector3.zero;
 
-       
-
+   
     }
 
     // Update is called once per frame
@@ -89,11 +88,19 @@ public class DialogManager : MonoBehaviour
             
 
             isActive = false;
+            EnableItems();
             //animaition to close the dialog box
           
             backgroundBox.LeanScale(Vector3.zero, 0.5f).setEaseInOutExpo();
            
         }
+    }
+
+    public void EnableItems()
+    {
+        GameManager.Instance.MainCanvas.SetActive(true);
+        gameObject.GetComponent<RotateBlock>().enabled = true;
+        GameManager.Instance.player.GetComponent<PlayerController>().enabled = true;
     }
 
  

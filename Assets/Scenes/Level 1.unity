@@ -478,7 +478,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.53483707, y: -0.000000021807935, z: 0.000000013803917, w: 0.8449552}
+  m_LocalRotation: {x: 0.53483707, y: 0.000000021807926, z: -0.000000013803912, w: 0.8449552}
   m_LocalPosition: {x: 0, y: 3.09, z: -1.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1289,6 +1289,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 639687802}
+  - {fileID: 655578116}
   m_Father: {fileID: 2141301714}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1525,10 +1526,7 @@ PrefabInstance:
     - target: {fileID: 4033608456979112892, guid: 4e4307a6fb2c97644b896c24cb0e99ca,
         type: 3}
       propertyPath: m_text
-      value: 'Oh, after gathering all the wisdom in the world.
-
-        That sly
-        God, Oya'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4033608456979112893, guid: 4e4307a6fb2c97644b896c24cb0e99ca,
         type: 3}
@@ -1726,6 +1724,103 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646660218}
   m_CullTransparentMesh: 1
+--- !u!1 &655578115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 655578116}
+  - component: {fileID: 655578118}
+  - component: {fileID: 655578117}
+  - component: {fileID: 655578119}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &655578116
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655578115}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 587325694}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 449, y: 331}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &655578117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655578115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 61367d92282ff411c98726a49067f9dd, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &655578118
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655578115}
+  m_CullTransparentMesh: 1
+--- !u!95 &655578119
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655578115}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b0dfa6d2569d444bcb50ead8e5e3cb20, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &812292864
 GameObject:
   m_ObjectHideFlags: 0
@@ -3856,7 +3951,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1588790848}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.53483707, y: -0.000000021807935, z: 0.000000013803917, w: 0.8449552}
+  m_LocalRotation: {x: 0.53483707, y: 0.000000021807926, z: -0.000000013803912, w: 0.8449552}
   m_LocalPosition: {x: 0, y: 3.09, z: -1.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4395,6 +4490,7 @@ GameObject:
   - component: {fileID: 2115062775}
   - component: {fileID: 2115062776}
   - component: {fileID: 2115062777}
+  - component: {fileID: 2115062778}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4483,7 +4579,8 @@ MonoBehaviour:
   FailMenu: {fileID: 4390184866828750999}
   MainCanvas: {fileID: 399104742}
   congratulatorySound: {fileID: 0}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 134074747}
+  player: {fileID: 266425724}
 --- !u!114 &2115062777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4496,12 +4593,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a231bd832d4ec4fb688c751d59741e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorImage: {fileID: 0}
   messageText: {fileID: 639687804}
   backgroundBox: {fileID: 639687803}
-  nameText: {fileID: 0}
-  ageText: {fileID: 0}
-  titleText: {fileID: 0}
+--- !u!114 &2115062778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115062771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2113310ca374b4b439e0622ac102a6de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messages:
+  - message: I am Kweku Ananse, Oh yes Ananse himself. Odomankoma's Head-weaver.
+      Master Crastfman. Legend of Tailless Tales; Supreme Strategist; Odomankoma's
+      Mystery Messenger
+  - message: That was surely a mouthful of appellations! You could't have forgotten
+      me so easily? Ooo you have? eiii!
+  - message: This is more reason why I must go. Yes!.
+  - message: I must go and search for all the wisdom in the world. I must retrieve
+      them from where Odomankoma hid them
+  - message: You there, yes you on the screen. I can feel your presence. Oyankopon
+      sent you to spy on me didn't He?
+  - message: Well you will help me get my gourds of wisdom. We have to find the gourd
+      before time runs out
+  - message: You would guide me and help me get a clear path to the gourd.
+  - message: The maze is not in order. Tap on a block to rotate it and align it.
+      Do so until you find a clear path for me and then direct me to the gourd.
+  - message: Help me get all the wisdom in the world so that these ungrateful humans
+      would respect me again.
 --- !u!1 &2127339912
 GameObject:
   m_ObjectHideFlags: 0

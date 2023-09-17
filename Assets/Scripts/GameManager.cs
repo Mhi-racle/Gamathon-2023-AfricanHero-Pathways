@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public AudioClip congratulatorySound;
     public AudioSource audioSource;
 
+    public GameObject player;
+
     private void Awake()
     {
         Instance = this;
@@ -29,11 +31,19 @@ public class GameManager : MonoBehaviour
         FailMenu.SetActive(false);
 
         Time.timeScale = 1;
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (DialogManager.isActive)
+        {
+            MainCanvas.SetActive(false);
+            gameObject.GetComponent<RotateBlock>().enabled = false;
+            player.GetComponent<PlayerController>().enabled = false;
+        }
         if (Input.GetKey(KeyCode.Escape))
         {
             if (!isPaused)

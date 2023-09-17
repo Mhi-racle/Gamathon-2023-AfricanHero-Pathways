@@ -21,5 +21,5 @@ public class DialogueTrigger : MonoBehaviour
 public class Message
 {
     public string message;
-    public Sprite sprite;
+   
 }

@@ -37,16 +37,22 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        /*
-        //gets the vertical and horizontal inputs of the player and stores it in floats
-        float verticalInput = floatingJoystick.Vertical;
-        float horizontalInput = floatingJoystick.Horizontal;
-        */
+        float verticalInput;
+        float horizontalInput;
+        #region Standalone Inputs
 
-        float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
+         verticalInput = floatingJoystick.Vertical;
+         horizontalInput = floatingJoystick.Horizontal;
+
+        #endregion
+
+        #region Mobile Inputs
+        verticalInput = Input.GetAxis("Vertical");
+         horizontalInput = Input.GetAxis("Horizontal");
+        #endregion
+
         Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-
+       
 
         //if the direction is greater than zero
         if (direction.magnitude >= 0.1f)
