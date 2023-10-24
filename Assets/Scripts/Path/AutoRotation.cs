@@ -2,16 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Script requires AudioSource
+[RequireComponent(typeof(AudioSource))]
+
 public class AutoRotation : MonoBehaviour
 {
-    public float delay;
+    
+
+   private float delay = 1;
     AudioSource speaker;
     
     // Start is called before the first frame update
     void Start()
     {
         speaker = GetComponent<AudioSource>();
+        speaker.clip = RotateBlock.Instance.swoosh;
         InvokeRepeating("AutoRotate", 1, delay);
+
+        gameObject.tag = null;
     }
 
     // Update is called once per frame

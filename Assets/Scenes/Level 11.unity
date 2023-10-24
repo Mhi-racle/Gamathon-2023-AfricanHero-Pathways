@@ -947,6 +947,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d2d8dad309c3f4978a095a5bad13b039,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1185093425}
     - targetCorrespondingSourceObject: {fileID: 8590067468806308668, guid: d2d8dad309c3f4978a095a5bad13b039,
         type: 3}
       insertIndex: -1
@@ -1063,6 +1067,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 180950958}
+    - targetCorrespondingSourceObject: {fileID: 69942560196644347, guid: d2d8dad309c3f4978a095a5bad13b039,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 180950964}
+    - targetCorrespondingSourceObject: {fileID: 69942560196644347, guid: d2d8dad309c3f4978a095a5bad13b039,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 180950963}
     - targetCorrespondingSourceObject: {fileID: -5043784451748033163, guid: d2d8dad309c3f4978a095a5bad13b039,
         type: 3}
       insertIndex: -1
@@ -1386,6 +1398,114 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5221675704929760651, guid: d2d8dad309c3f4978a095a5bad13b039, type: 3}
+--- !u!114 &180950963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180950945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2974e2793dd9e41298767dca7a4f09d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &180950964
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180950945}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &230320231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4006,7 +4126,9 @@ PrefabInstance:
     - target: {fileID: 2219033281029345291, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
       propertyPath: m_text
-      value: "\nMore wisdom for me, ehem, \nsorry, us."
+      value: 'Great job, you succeeded.
+
+        I''m impressed'
       objectReference: {fileID: 0}
     - target: {fileID: 2852539646862096766, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
@@ -4613,6 +4735,46 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5708066447020054089, guid: d2d8dad309c3f4978a095a5bad13b039, type: 3}
+--- !u!1 &1185093423 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d2d8dad309c3f4978a095a5bad13b039,
+    type: 3}
+  m_PrefabInstance: {fileID: 180950933}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1185093425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185093423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57d2c2f0e9f149a4a9cc1d44b8abd23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blocks:
+  - {fileID: 1010829260}
+  - {fileID: 1655742893}
+  - {fileID: 1131692429}
+  - {fileID: 575642675}
+  - {fileID: 1007064826}
+  - {fileID: 371719781}
+  - {fileID: 180950949}
+  - {fileID: 180950948}
+  - {fileID: 180950947}
+  - {fileID: 180950946}
+  - {fileID: 180950945}
+  - {fileID: 180950944}
+  - {fileID: 180950943}
+  - {fileID: 180950942}
+  - {fileID: 180950941}
+  - {fileID: 180950940}
+  - {fileID: 180950939}
+  - {fileID: 180950938}
+  - {fileID: 180950937}
+  - {fileID: 180950936}
+  - {fileID: 1212636235}
 --- !u!64 &1189032932
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5426,7 +5588,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2974e2793dd9e41298767dca7a4f09d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
 --- !u!82 &1623985092
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6168,7 +6329,7 @@ PrefabInstance:
     - target: {fileID: 5446539041726415082, guid: af62d0a18442e4ce38d5f09559dc5369,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5598631905601589176, guid: af62d0a18442e4ce38d5f09559dc5369,
         type: 3}
@@ -6550,9 +6711,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Taking a break I see...
+  m_text: 'Resting a bit..
 
-    Ye mortals are really weak.'
+    Well you need the rest, take your
+
+    time.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6284e0cde399a430481265eb290de3e3, type: 2}
   m_sharedMaterial: {fileID: -9015403911986643524, guid: 6284e0cde399a430481265eb290de3e3,
@@ -7120,7 +7283,7 @@ PrefabInstance:
       propertyPath: m_text
       value: '.................
 
-        I''m tired of talking.
+        SIgh, let''s try again
 
 '
       objectReference: {fileID: 0}

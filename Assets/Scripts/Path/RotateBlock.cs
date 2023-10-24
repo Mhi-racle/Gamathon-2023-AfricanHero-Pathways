@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class RotateBlock : MonoBehaviour
 {
+    public static RotateBlock Instance { set; get; }
     public float rotationDuration = 1;
     public float startTimeForR = 0;
     public AudioSource speaker;
     public AudioClip swoosh;
     Quaternion targetRotation;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -30,15 +36,7 @@ public class RotateBlock : MonoBehaviour
                     speaker.PlayOneShot(swoosh);
                     selection.transform.Rotate(0, 90, 0, Space.World);
                    
-                   
-                        //float rotationTime = (Time.time - startTimeForR) / rotationDuration;
-                        //if (rotationTime < 1)
-                        //{
-                        //    // Use Quaternion.Lerp to smoothly rotate the player
-                        //    selection.rotation = Quaternion.Lerp(selection.rotation, targetRotation, rotationTime);
-
-                        //}
-                      
+       
                     
                 }
             }
