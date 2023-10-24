@@ -843,9 +843,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1198371389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 273.6243, y: -44.30667}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &259034966
@@ -2513,9 +2513,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1198371389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 158.82715, y: -19.306671}
   m_SizeDelta: {x: 317.6543, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1518327360
@@ -2706,7 +2706,7 @@ MonoBehaviour:
   playerObj: {fileID: 0}
   characterController: {fileID: 0}
   rotationSpeed: 500
-  floatingJoystick: {fileID: 0}
+  fixedJoystick: {fileID: 0}
 --- !u!1 &1736124688
 GameObject:
   m_ObjectHideFlags: 0
@@ -3174,9 +3174,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2939076075955052194}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 273.6243, y: -44.30667}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &3401981397075201771
@@ -3314,9 +3314,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2939076075955052194}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 158.82715, y: -19.306671}
   m_SizeDelta: {x: 317.6543, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &6594568910454032690
