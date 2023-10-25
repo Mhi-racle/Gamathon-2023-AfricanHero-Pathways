@@ -19,7 +19,7 @@ public class AutoRotation : MonoBehaviour
         speaker.clip = RotateBlock.Instance.swoosh;
         InvokeRepeating("AutoRotate", 1, delay);
 
-        gameObject.tag = null;
+        gameObject.tag = "Untagged";
     }
 
     // Update is called once per frame
