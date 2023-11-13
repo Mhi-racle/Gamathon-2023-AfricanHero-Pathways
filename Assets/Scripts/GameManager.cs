@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+[RequireComponent(typeof(FunnyRemarksManager))]
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { set; get; }
@@ -90,6 +92,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        FunnyRemarksManager.Instance.ShowPauseText();
         MainCanvas.SetActive(false);
         isPaused = true;
         PauseMenu.SetActive(true);
@@ -99,6 +102,7 @@ public class GameManager : MonoBehaviour
     public void TimeUp()
     {
         Debug.Log("Time is Up");
+        FunnyRemarksManager.Instance.ShowLoseText();
         MainCanvas.SetActive(false);
         FailMenu.SetActive(true);
         FailMenu.GetComponent<Animator>().SetTrigger("gameOver");
@@ -111,6 +115,7 @@ public class GameManager : MonoBehaviour
 
     public void TargetReached()
     {
+        FunnyRemarksManager.Instance.ShowWinText();
         audioSource.PlayOneShot(congratulatorySound);
         WinMenu.SetActive(true);
         MainCanvas.SetActive(false);

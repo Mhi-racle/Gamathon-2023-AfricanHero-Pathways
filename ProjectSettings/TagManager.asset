@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Block
+  - pauseText
+  - loseText
+  - winText
   layers:
   - Default
   - TransparentFX

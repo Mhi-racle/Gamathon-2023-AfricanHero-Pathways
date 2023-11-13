@@ -2780,6 +2780,11 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3193474880272877664, guid: 4b4709e3877f04338bc48aa47b120afa,
+        type: 3}
+      propertyPath: m_TagString
+      value: winText
+      objectReference: {fileID: 0}
     - target: {fileID: 3205701720459718463, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -3072,6 +3077,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b4709e3877f04338bc48aa47b120afa, type: 3}
+--- !u!114 &1089859857 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2219033281029345291, guid: 4b4709e3877f04338bc48aa47b120afa,
+    type: 3}
+  m_PrefabInstance: {fileID: 1089859856}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1092221387
 GameObject:
   m_ObjectHideFlags: 0
@@ -4186,7 +4203,7 @@ GameObject:
   - component: {fileID: 2063817609}
   m_Layer: 5
   m_Name: Funny Comments
-  m_TagString: Untagged
+  m_TagString: pauseText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4325,6 +4342,7 @@ GameObject:
   - component: {fileID: 2115062776}
   - component: {fileID: 2115062777}
   - component: {fileID: 2115062778}
+  - component: {fileID: 2115062779}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4459,6 +4477,21 @@ MonoBehaviour:
       Do so until you find a clear path for me and then direct me to the gourd.
   - message: Help me get all the wisdom in the world so that these ungrateful humans
       would respect me again.
+--- !u!114 &2115062779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115062771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30f8ce54bdb804fdf803aea8c232cf20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseText: {fileID: 2063817609}
+  winText: {fileID: 1089859857}
+  loseText: {fileID: 7218227448475908483}
 --- !u!1 &2127339912
 GameObject:
   m_ObjectHideFlags: 0
@@ -4948,6 +4981,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 8048133826228089427, guid: 6f03153c2cd4543cbad4f18f57e17121,
+        type: 3}
+      propertyPath: m_TagString
+      value: loseText
+      objectReference: {fileID: 0}
     - target: {fileID: 8109738508930936114, guid: 6f03153c2cd4543cbad4f18f57e17121,
         type: 3}
       propertyPath: m_RaycastTarget
@@ -4958,6 +4996,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f03153c2cd4543cbad4f18f57e17121, type: 3}
+--- !u!114 &7218227448475908483 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1802246055096061729, guid: 6f03153c2cd4543cbad4f18f57e17121,
+    type: 3}
+  m_PrefabInstance: {fileID: 7218227448475908482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
