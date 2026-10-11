@@ -23,6 +23,9 @@ public class ThirdPersonCam : MonoBehaviour
     }
     private void Update()
     {
+        // The Main Menu has this script but no joystick; without one there is nothing to steer.
+        if (fixedJoystick == null || orientation == null || player == null || playerObj == null) return;
+
         //rotate orientation
         Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
         orientation.forward = viewDir;

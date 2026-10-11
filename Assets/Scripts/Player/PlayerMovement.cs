@@ -1,108 +1,75 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Moves Ananse relative to the camera. Reads the on-screen joystick on mobile and
+/// WASD / arrow keys on PC, and turns him smoothly to face the way he walks.
+/// </summary>
+/// <remarks>The file is named PlayerMovement.cs for historical reasons; the class is attached in every level.</remarks>
 public class PlayerController : MonoBehaviour
 {
+    private static readonly int IsWalkingHash = Animator.StringToHash("isWalking");
+    private const float InputDeadZone = 0.1f;
+
     public CharacterController controller;
     public Camera cam;
     public float speed = 6f;
     public float turnSmoothSpeed = 0.1f;
-    float turnSmoothVelocity;
-    private Rigidbody rb;
-
     public Animator playerAnimator;
-    //public fixedJoystick fixedJoystick;
-
     public FixedJoystick fixedJoystick;
+
+    /// <summary>True while Ananse is moving this physics step.</summary>
     public bool isWalking;
-    
-    Vector3 lookPos;
 
+    private float turnSmoothVelocity;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-      
-        rb = GetComponent<Rigidbody>();
-        fixedJoystick = FindAnyObjectByType<FixedJoystick>();
+        if (cam == null) cam = Camera.main;
 
+        // The joystick lives under the "For Mobile" canvas, which is hidden on PC.
+        if (fixedJoystick == null) fixedJoystick = FindAnyObjectByType<FixedJoystick>(FindObjectsInactive.Include);
     }
 
-
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
+        // Stop the walk cycle when control is taken away (pause, win, lose, dialogue).
+        isWalking = false;
+        if (playerAnimator != null) playerAnimator.SetBool(IsWalkingHash, false);
+    }
 
+    private void Update()
+    {
+        // Ananse stays on the maze floor.
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
-    void FixedUpdate()
+
+    private void FixedUpdate()
     {
-        float verticalInput;
-        float horizontalInput;
+        Vector2 input = ReadMoveInput();
+        Vector3 direction = new Vector3(input.x, 0f, input.y);
 
+        isWalking = direction.magnitude >= InputDeadZone;
+        if (playerAnimator != null) playerAnimator.SetBool(IsWalkingHash, isWalking);
+        if (!isWalking) return;
 
-        //verticalInput = fixedJoystick.Vertical;
-        //horizontalInput = fixedJoystick.Horizontal;
+        direction.Normalize();
 
+        // Angle of the input relative to where the camera is looking.
+        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothSpeed);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-
-        //#region Standalone Inputs
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
-        //#endregion
-
-        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-       
-
-        //if the direction is greater than zero
-        if (direction.magnitude >= 0.1f)
-        {
-            //if player is moving, then play the rolling animation and also set isRolling to true
-            //isRolling notifies the shooting script so that it doesnt shoot when the player is rolling
-            playerAnimator.SetBool("isWalking", true);
-            isWalking = true;
-
-      
-            //calculates the target angle to be rotated to 
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothSpeed);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            //moves the player in the direction of the camera
-            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDirection.normalized * speed * Time.deltaTime);
-            // rb.AddForce(moveDirection * speed);
-
-
-
-        }
-        else
-        {
-            playerAnimator.SetBool("isWalking", false);
-        }
-
-
-        
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 100))
-        {
-            lookPos = hit.point;
-          
-        }
-
-         
-        Vector3 lookDir = lookPos - transform.position;
-
-        lookPos.y = 2;
-        
-        lookDir.y = 0;
-        transform.LookAt(transform.position + lookDir, Vector3.up);
+        Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        controller.Move(moveDirection * speed * Time.deltaTime);
     }
 
+    /// <summary>Joystick and keyboard combined; whichever is pushed further wins.</summary>
+    private Vector2 ReadMoveInput()
+    {
+        Vector2 keyboard = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (fixedJoystick == null || !fixedJoystick.isActiveAndEnabled) return keyboard;
 
-   
+        Vector2 stick = new Vector2(fixedJoystick.Horizontal, fixedJoystick.Vertical);
+        return stick.sqrMagnitude > keyboard.sqrMagnitude ? stick : keyboard;
+    }
 }
