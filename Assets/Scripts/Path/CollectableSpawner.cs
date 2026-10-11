@@ -1,11 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Draws a guide line from Ananse towards the gourd, refreshed a few times per second.
+/// </summary>
 public class CollectableSpawner : MonoBehaviour
 {
+    private const int MaxCorners = 64;
 
+    [Tooltip("The gourd the line points to.")]
     [SerializeField]
     private GameObject Prefab;
 
@@ -19,58 +23,37 @@ public class CollectableSpawner : MonoBehaviour
     private float pathHeightOffset = 1.25f;
 
     [SerializeField]
-    private float SpawnHeightOffset = 1.5f;
-
-    [SerializeField]
     private float PathUpdateSpeed = 0.25f;
 
-    
-    private NavMeshTriangulation Triangulation;
-    private Coroutine DrawPathCoroutine;
-
-    private void Awake()
-    {
-        Triangulation = NavMesh.CalculateTriangulation();
-    }
+    // Reused every refresh so drawing the line doesn't allocate.
+    private readonly Vector3[] corners = new Vector3[MaxCorners];
 
     private void Start()
     {
-        SpawnNewObject();
+        if (Prefab != null && Player != null && Path != null) StartCoroutine(DrawPathToCollectable());
     }
 
-    private void SpawnNewObject()
-    {
-  
-       
-        if (DrawPathCoroutine != null)
-        {
-            StopCoroutine(DrawPathCoroutine);
-        }
-
-        DrawPathCoroutine = StartCoroutine(DrawPathToCollectable());
-    }
-    IEnumerator DrawPathToCollectable()
+    private IEnumerator DrawPathToCollectable()
     {
         WaitForSeconds wait = new WaitForSeconds(PathUpdateSpeed);
         NavMeshPath path = new NavMeshPath();
 
-        while(Prefab != null)
+        // The gourd is destroyed when collected, which ends the loop.
+        while (Prefab != null)
         {
             if (NavMesh.CalculatePath(Player.position, Prefab.transform.position, NavMesh.AllAreas, path))
             {
-                Path.positionCount = path.corners.Length;
-
-                for (int i = 0; i < path.corners.Length; i++)
+                int count = path.GetCornersNonAlloc(corners);
+                Path.positionCount = count;
+                for (int i = 0; i < count; i++)
                 {
-                    Path.SetPosition(i, path.corners[i] + Vector3.up * pathHeightOffset);
+                    Path.SetPosition(i, corners[i] + Vector3.up * pathHeightOffset);
                 }
-            }
-            else
-            {
-                Debug.Log("Unable to calculate");
             }
 
             yield return wait;
         }
+
+        Path.positionCount = 0;
     }
 }

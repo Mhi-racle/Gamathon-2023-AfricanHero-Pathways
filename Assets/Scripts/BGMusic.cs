@@ -1,48 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 
+/// <summary>
+/// Menu background music that keeps playing across scene loads. Only the first instance survives.
+/// </summary>
+[RequireComponent(typeof(AudioSource))]
 public class BGMusic : MonoBehaviour
 {
     public static BGMusic instance;
 
-    void Awake()
+    private void Awake()
     {
         if (instance != null)
+        {
             Destroy(gameObject);
-        else
-        {
-            instance = this;
-
-            DontDestroyOnLoad(this.gameObject);
+            return;
         }
 
-       
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // Looping on the AudioSource replaces the old per-frame "restart if stopped" check.
+        AudioSource source = GetComponent<AudioSource>();
+        source.loop = true;
+        if (!source.isPlaying) source.Play();
     }
-    void Start()
-    {
-        
-
-        if (PlayerPrefs.GetString("music") == "true")
-        {
-            BGMusic.instance.GetComponent<AudioSource>().Play();
-        }
-        else
-        {
-            BGMusic.instance.GetComponent<AudioSource>().Pause();
-        }
-       
-    }
-
-    private void Update()
-    {
-       if(!BGMusic.instance.GetComponent<AudioSource>().isPlaying)
-        {
-            BGMusic.instance.GetComponent<AudioSource>().Play();
-        }
-    }
-
-
-
 }
