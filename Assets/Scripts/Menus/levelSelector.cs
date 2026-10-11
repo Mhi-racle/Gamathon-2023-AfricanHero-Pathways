@@ -1,23 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;
 
+/// <summary>A numbered button on the level selection screen.</summary>
 public class levelSelector : MonoBehaviour
 {
     public int level;
     public TextMeshProUGUI levelText;
 
-
-    void Start()
+    private void Start()
     {
-        levelText.text = level.ToString();
-
+        if (levelText != null) levelText.text = level.ToString();
     }
+
     public void OpenScene()
     {
-        SceneManager.LoadScene("Level " + level.ToString());
+        if (!LevelProgress.Exists(level))
+        {
+            Debug.LogWarning($"Level {level} is not in Build Settings.");
+            return;
+        }
+
+        SceneManager.LoadScene(LevelProgress.SceneNameFor(level));
     }
 }

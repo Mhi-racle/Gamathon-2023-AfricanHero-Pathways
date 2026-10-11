@@ -1,43 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Level selection screen: unlocks the buttons for levels the player has reached and that
+/// exist in the build. Buttons for levels that haven't been made yet stay locked.
+/// </summary>
 public class ManageLevels : MonoBehaviour
 {
-    int levelsUnlocked;
     public Button[] buttons;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
-
-        //PlayerPrefs.DeleteAll();
-
-        levelsUnlocked = PlayerPrefs.GetInt("levelsUnlocked", 1);
+        Time.timeScale = 1;
+        int highestUnlocked = LevelProgress.HighestUnlocked;
 
         for (int i = 0; i < buttons.Length; i++)
         {
-            buttons[i].interactable = false;
-        }
+            if (buttons[i] == null) continue;
 
-        for (int i = 0; i < levelsUnlocked; i++)
-        {
-            buttons[i].interactable = true;
+            // Each button's levelSelector knows its level; fall back to its position in the list.
+            int level = buttons[i].TryGetComponent(out levelSelector selector) ? selector.level : i + 1;
+            buttons[i].interactable = level <= highestUnlocked && LevelProgress.Exists(level);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            goBack();
-        }
+        // Escape on PC, Back on Android.
+        if (Input.GetKeyDown(KeyCode.Escape)) goBack();
     }
 
     public void goBack()
     {
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene(GameConstants.Scenes.MainMenu);
     }
 }
