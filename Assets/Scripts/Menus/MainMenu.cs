@@ -1,19 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+/// <summary>Main menu buttons.</summary>
 public class MainMenu : MonoBehaviour
 {
-    
+    private void Start()
+    {
+        // In case we arrived here from a paused level.
+        Time.timeScale = 1;
+    }
+
     public void GoTo(string sceneToGo)
     {
-        // StaticVariables.sceneIndex = indexToGoTo;
-        // // SceneManager.LoadScene("LoadingScene");
         SceneManager.LoadScene(sceneToGo);
     }
+
     public void Quit()
     {
         Application.Quit();
-        Debug.Log("Game Closed");
     }
 }

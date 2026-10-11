@@ -1,127 +1,208 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-[RequireComponent(typeof(FunnyRemarksManager))]
+/// <summary>
+/// The phases a level moves through. Only <see cref="Playing"/> accepts gameplay input.
+/// </summary>
+public enum GameState
+{
+    Intro,
+    Playing,
+    Paused,
+    Won,
+    Lost
+}
 
+/// <summary>
+/// Owns the flow of a single level: intro dialogue, play, pause, win and lose.
+/// Other scripts ask <see cref="IsPlaying"/> instead of toggling each other on and off.
+/// </summary>
+[RequireComponent(typeof(FunnyRemarksManager))]
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { set; get; }
+    public static GameManager Instance { get; private set; }
+
     public GameObject PauseMenu;
     public GameObject WinMenu;
     public GameObject FailMenu;
     public GameObject MainCanvas;
-
-    bool isPaused = false;
 
     public AudioClip congratulatorySound;
     public AudioSource audioSource;
 
     public GameObject player;
 
-    private GameObject mobileCanvas;
-    GameObject virtualCam;
+    [Tooltip("Show the on-screen joystick and pause button in the Editor, for testing mobile controls on PC.")]
+    [SerializeField] private bool forceMobileControls = false;
+
+    private PlayerController playerController;
+    private RotateBlock rotateBlock;
+
+    public GameState State { get; private set; } = GameState.Playing;
+
+    /// <summary>True while the player may move Ananse and rotate blocks.</summary>
+    public bool IsPlaying => State == GameState.Playing;
+
+    /// <summary>
+    /// Frame on which the state last changed. Input scripts skip that frame so the tap that
+    /// closes a dialogue or menu doesn't also rotate a block.
+    /// </summary>
+    public int StateChangedFrame { get; private set; }
+
+    /// <summary>True on phones/tablets (including the Device Simulator) or when forced in the Inspector.</summary>
+    public bool UseMobileControls => UnityEngine.Device.Application.isMobilePlatform || forceMobileControls;
 
     private void Awake()
     {
         Instance = this;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        MainCanvas.SetActive(true);
-        PauseMenu.SetActive(false);
-        WinMenu.SetActive(false);
-        FailMenu.SetActive(false);
-
         Time.timeScale = 1;
 
-        //for pc
-        mobileCanvas = GameObject.Find("For Mobile");
-        mobileCanvas.SetActive(false);
+        rotateBlock = GetComponent<RotateBlock>();
+        if (player != null) playerController = player.GetComponent<PlayerController>();
 
-        virtualCam = GameObject.Find("Virtual Camera");
-        virtualCam.GetComponent<ThirdPersonCam>().enabled = false;
+        // Panels are set up in Awake so an intro dialogue opened from another Start() isn't overridden.
+        SetActiveSafe(MainCanvas, true);
+        SetActiveSafe(PauseMenu, false);
+        SetActiveSafe(WinMenu, false);
+        SetActiveSafe(FailMenu, false);
 
+        GameObject mobileControls = GameObject.Find(GameConstants.Objects.MobileControls);
+        SetActiveSafe(mobileControls, UseMobileControls);
 
+        // The camera follows Ananse through Cinemachine; the joystick-driven orbit script is not used.
+        GameObject virtualCam = GameObject.Find(GameConstants.Objects.VirtualCamera);
+        if (virtualCam != null && virtualCam.TryGetComponent(out ThirdPersonCam thirdPersonCam))
+        {
+            thirdPersonCam.enabled = false;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        if (DialogManager.isActive)
-        {
-            MainCanvas.SetActive(false);
-            gameObject.GetComponent<RotateBlock>().enabled = false;
-            player.GetComponent<PlayerController>().enabled = false;
-        }
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            if (!isPaused)
-            {
-                PauseGame();
-            }
-            else
-            {
-                ResumeGame();
-            }
-        }
+        if (Instance == this) Instance = null;
     }
+
+    private void Update()
+    {
+        // Escape on PC, the Back button on Android.
+        if (!Input.GetKeyDown(KeyCode.Escape)) return;
+
+        if (State == GameState.Playing) PauseGame();
+        else if (State == GameState.Paused) ResumeGame();
+    }
+
+    /// <summary>Called by <see cref="DialogManager"/> when the intro conversation opens.</summary>
+    public void BeginDialogue()
+    {
+        if (State != GameState.Playing) return;
+
+        SetState(GameState.Intro);
+        SetActiveSafe(MainCanvas, false);
+    }
+
+    /// <summary>Called by <see cref="DialogManager"/> when the last line has been read.</summary>
+    public void EndDialogue()
+    {
+        if (State != GameState.Intro) return;
+
+        SetState(GameState.Playing);
+        SetActiveSafe(MainCanvas, true);
+    }
+
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        LoadScene(SceneManager.GetActiveScene().name);
     }
+
     public void GoHome()
     {
-        SceneManager.LoadScene("Main Menu");
+        LoadScene(GameConstants.Scenes.MainMenu);
     }
-    public void NextLevel (int nextLevel)
+
+    /// <summary>
+    /// Loads the level after the current one, or returns to level selection after the last level.
+    /// The argument is kept so existing button wiring still works, but it is ignored: older scenes
+    /// passed a wrong or zero value, which used to wipe the player's progress.
+    /// </summary>
+    public void NextLevel(int unusedLevelArgument)
     {
-        PlayerPrefs.SetInt("levelsUnlocked", nextLevel);
-        SceneManager.LoadScene("Level " + nextLevel);
+        int next = LevelProgress.CurrentLevel() + 1;
+        LoadScene(LevelProgress.Exists(next) ? LevelProgress.SceneNameFor(next) : GameConstants.Scenes.LevelSelection);
     }
+
     public void ResumeGame()
     {
-        MainCanvas.SetActive(true);
-        isPaused = false;
-        PauseMenu.SetActive(false);
-        PauseMenu.GetComponent<Animator>().SetBool("paused", false);
+        if (State != GameState.Paused) return;
+
+        SetState(GameState.Playing);
+        SetActiveSafe(MainCanvas, true);
+        SetActiveSafe(PauseMenu, false);
+        if (PauseMenu != null && PauseMenu.TryGetComponent(out Animator animator)) animator.SetBool("paused", false);
         Time.timeScale = 1;
     }
 
     public void PauseGame()
     {
+        if (State != GameState.Playing) return;
+
+        SetState(GameState.Paused);
         FunnyRemarksManager.Instance.ShowPauseText();
-        MainCanvas.SetActive(false);
-        isPaused = true;
-        PauseMenu.SetActive(true);
-        PauseMenu.GetComponent<Animator>().SetBool("paused", true);
+        SetActiveSafe(MainCanvas, false);
+        SetActiveSafe(PauseMenu, true);
+        if (PauseMenu != null && PauseMenu.TryGetComponent(out Animator animator)) animator.SetBool("paused", true);
         Time.timeScale = 0;
     }
+
+    /// <summary>Called by <see cref="Timer"/> when the countdown reaches zero.</summary>
     public void TimeUp()
     {
-        Debug.Log("Time is Up");
+        if (State != GameState.Playing) return;
+
+        SetState(GameState.Lost);
         FunnyRemarksManager.Instance.ShowLoseText();
-        MainCanvas.SetActive(false);
-        FailMenu.SetActive(true);
-        FailMenu.GetComponent<Animator>().SetTrigger("gameOver");
-
-        gameObject.GetComponent<Timer>().enabled = false;
-        gameObject.GetComponent<RotateBlock>().enabled = false;
-        player.GetComponent<PlayerController>().enabled = false;
-
+        ShowEndPanel(FailMenu);
     }
 
+    /// <summary>Called when Ananse reaches the gourd. Unlocks the next level straight away.</summary>
     public void TargetReached()
     {
+        if (State != GameState.Playing) return;
+
+        SetState(GameState.Won);
+        LevelProgress.Unlock(LevelProgress.CurrentLevel() + 1);
+
         FunnyRemarksManager.Instance.ShowWinText();
-        audioSource.PlayOneShot(congratulatorySound);
-        WinMenu.SetActive(true);
-        MainCanvas.SetActive(false);
-        WinMenu.GetComponent<Animator>().SetTrigger("gameOver");
-        Debug.Log("Target reached");
-        gameObject.GetComponent<Timer>().enabled = false;
-        gameObject.GetComponent<RotateBlock>().enabled = false;
+        if (audioSource != null && congratulatorySound != null) audioSource.PlayOneShot(congratulatorySound);
+        ShowEndPanel(WinMenu);
+    }
+
+    private void ShowEndPanel(GameObject panel)
+    {
+        SetActiveSafe(MainCanvas, false);
+        SetActiveSafe(panel, true);
+        if (panel != null && panel.TryGetComponent(out Animator animator)) animator.SetTrigger("gameOver");
+    }
+
+    private void SetState(GameState newState)
+    {
+        State = newState;
+        StateChangedFrame = Time.frameCount;
+
+        // Movement and block rotation are only live while playing.
+        bool playing = newState == GameState.Playing;
+        if (playerController != null) playerController.enabled = playing;
+        if (rotateBlock != null) rotateBlock.enabled = playing;
+    }
+
+    private static void LoadScene(string sceneName)
+    {
+        // A scene left from the pause menu would otherwise start frozen.
+        Time.timeScale = 1;
+        SceneManager.LoadScene(sceneName);
+    }
+
+    private static void SetActiveSafe(GameObject target, bool active)
+    {
+        if (target != null) target.SetActive(active);
     }
 }

@@ -1,75 +1,68 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
+
+/// <summary>
+/// Shows Ananse's intro conversation one line at a time. Gameplay is held in
+/// <see cref="GameState.Intro"/> until the last line has been read.
+/// </summary>
 public class DialogManager : MonoBehaviour
 {
-   
     public TextMeshProUGUI messageText;
     public RectTransform backgroundBox;
 
-    Message[] currentMessages;
-    int activeMessage = 0;
-    public static bool isActive = false;
+    private Message[] currentMessages;
+    private int activeMessage = 0;
 
-   
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>True while a conversation is on screen.</summary>
+    public static bool isActive { get; private set; }
+
+    private void Awake()
     {
-        // sets the background box to be zero on start
+        // Static state outlives the scene, so a conversation abandoned mid-way must not carry over.
+        isActive = false;
+    }
+
+    private void OnDestroy()
+    {
+        isActive = false;
+    }
+
+    private void Start()
+    {
         backgroundBox.transform.localScale = Vector3.zero;
-
-   
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        #region Standalone Inputs
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) ) && isActive)
+        // On phones a tap also raises the simulated mouse click, so one check covers both.
+        if (isActive && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
         {
-
             NextMessage();
         }
-        #endregion
-
-        #region Mobile Inputs
-        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && isActive))
-        {
-
-        
-
-            NextMessage();
-        }
-        #endregion
     }
+
     public void OpenDialog(Message[] messages)
     {
+        if (messages == null || messages.Length == 0) return;
+
         currentMessages = messages;
         activeMessage = 0;
         isActive = true;
 
-        Debug.Log("Started conversation ! Loaded messages : " + messages.Length);
+        if (GameManager.Instance != null) GameManager.Instance.BeginDialogue();
         DisplayMessage();
 
-        //animating the dialog box using lean tween
-        backgroundBox.LeanScale(Vector3.one, 0.5f).setEaseInOutExpo(); //setEaseInoutExpo smoothens the animation
+        backgroundBox.LeanScale(Vector3.one, 0.5f).setEaseInOutExpo();
     }
 
     public void DisplayMessage()
     {
-        Message messageDisplay = currentMessages[activeMessage];
-        messageText.text = messageDisplay.message;
-       
-
-        //animates the text per every change
+        messageText.text = currentMessages[activeMessage].message;
         AnimateTextColor();
     }
 
-    //uses Lean Tween to animate the text's opacity to give a fade in and fade out effect
-    void AnimateTextColor()
+    /// <summary>Fades the new line in using LeanTween.</summary>
+    private void AnimateTextColor()
     {
         LeanTween.textAlpha(messageText.rectTransform, 0, 0);
         LeanTween.textAlpha(messageText.rectTransform, 1, 0.5f);
@@ -77,33 +70,23 @@ public class DialogManager : MonoBehaviour
 
     public void NextMessage()
     {
+        if (!isActive) return;
+
         activeMessage++;
         if (activeMessage < currentMessages.Length)
         {
             DisplayMessage();
+            return;
         }
-        else
-        {
-            Debug.Log("Coversation ended");
-            
 
-            isActive = false;
-            EnableItems();
-            //animaition to close the dialog box
-          
-            backgroundBox.LeanScale(Vector3.zero, 0.5f).setEaseInOutExpo();
-           
-        }
+        isActive = false;
+        EnableItems();
+        backgroundBox.LeanScale(Vector3.zero, 0.5f).setEaseInOutExpo();
     }
 
+    /// <summary>Hands control back to the player once the conversation ends.</summary>
     public void EnableItems()
     {
-        GameManager.Instance.MainCanvas.SetActive(true);
-        gameObject.GetComponent<RotateBlock>().enabled = true;
-        GameManager.Instance.player.GetComponent<PlayerController>().enabled = true;
+        if (GameManager.Instance != null) GameManager.Instance.EndDialogue();
     }
-
- 
-    
-
 }

@@ -1,46 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
+/// <summary>
+/// Level countdown. Only runs while the game is <see cref="GameState.Playing"/>, so the intro
+/// dialogue and the pause menu don't eat into the player's time.
+/// </summary>
 public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
+
+    [Tooltip("Seconds the player has to reach the gourd.")]
     public int timeLeft = 50;
-    public bool isCounting = false;
-  
-    // Start is called before the first frame update
-    void Start()
-    {
 
-        //timerText.gameObject.SetActive(false);
-        isCounting = false;
-        
+    [Tooltip("Below this many seconds the timer turns to the warning colour.")]
+    [SerializeField] private int warningSeconds = 10;
+    [SerializeField] private Color warningColor = new Color(0.9f, 0.2f, 0.15f);
+
+    private float remaining;
+    private int shownSeconds = -1;
+    private bool expired;
+
+    private void Start()
+    {
+        remaining = timeLeft;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!DialogManager.isActive)
+        if (expired || GameManager.Instance == null || !GameManager.Instance.IsPlaying) return;
+
+        if (timerText != null && !timerText.gameObject.activeSelf) timerText.gameObject.SetActive(true);
+
+        remaining -= Time.deltaTime;
+        if (remaining <= 0f)
         {
-            timerText.gameObject.SetActive(true);
-            if (!isCounting && timeLeft > 0)
-            {
-                StartCoroutine(count());
-            }
-            else if (timeLeft == 0)
-            {
-                timerText.text = "Time is up";
-                GameManager.Instance.TimeUp();
-            }
-
+            expired = true;
+            if (timerText != null) timerText.text = "Time is up";
+            GameManager.Instance.TimeUp();
+            return;
         }
-    }
-    IEnumerator count()
-    {
-        isCounting = true;
-        yield return new WaitForSeconds(1f);
-        timeLeft--;
-        timerText.text = timeLeft + "s";
-        isCounting = false;
+
+        // Only rebuild the label when the visible number changes, to avoid a string allocation per frame.
+        int seconds = Mathf.CeilToInt(remaining);
+        if (seconds == shownSeconds || timerText == null) return;
+
+        shownSeconds = seconds;
+        timerText.text = seconds + "s";
+        if (seconds <= warningSeconds) timerText.color = warningColor;
     }
 }
