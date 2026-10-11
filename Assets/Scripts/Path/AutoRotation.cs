@@ -1,37 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//Script requires AudioSource
+/// <summary>
+/// A block that turns by itself at a steady rhythm, used in later levels as a timing challenge.
+/// Auto-rotating blocks are untagged so the player can't tap them.
+/// </summary>
 [RequireComponent(typeof(AudioSource))]
-
 public class AutoRotation : MonoBehaviour
 {
-    
+    [Tooltip("Seconds between turns.")]
+    [SerializeField] private float interval = 1f;
 
-   private float delay = 1;
-    AudioSource speaker;
-    
-    // Start is called before the first frame update
-    void Start()
+    private AudioSource speaker;
+    private BlockSpin spin;
+
+    private void Start()
     {
         speaker = GetComponent<AudioSource>();
-        speaker.clip = RotateBlock.Instance.swoosh;
-        InvokeRepeating("AutoRotate", 1, delay);
+        spin = BlockSpin.For(gameObject);
+        if (RotateBlock.Instance != null) speaker.clip = RotateBlock.Instance.swoosh;
 
         gameObject.tag = "Untagged";
+        InvokeRepeating(nameof(AutoRotate), interval, interval);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void AutoRotate()
     {
-        
-    }
+        GameManager game = GameManager.Instance;
+        if (game == null || !game.IsPlaying) return;
 
-    void AutoRotate()
-    {
-        speaker.Play();
-        transform.Rotate(0, 90, 0, Space.World);
+        // Wait for Ananse to step off rather than sweeping a wall through him.
+        if (RotateBlock.IsPlayerOn(spin)) return;
 
+        float duration = RotateBlock.Instance != null ? RotateBlock.Instance.TurnDuration : 0.2f;
+        if (spin.TryTurn(duration)) speaker.Play();
     }
 }
