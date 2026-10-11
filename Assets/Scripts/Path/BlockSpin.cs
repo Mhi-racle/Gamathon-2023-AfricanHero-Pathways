@@ -10,12 +10,10 @@ using UnityEngine;
 public class BlockSpin : MonoBehaviour
 {
     private const float QuarterTurn = 90f;
-    private const float NudgeAngle = 8f;
-    private const float NudgeDuration = 0.18f;
 
     private Quaternion targetRotation;
 
-    /// <summary>True while a turn or nudge animation is playing.</summary>
+    /// <summary>True while a turn animation is playing.</summary>
     public bool IsBusy { get; private set; }
 
     /// <summary>Returns the block's <see cref="BlockSpin"/>, adding one the first time.</summary>
@@ -35,31 +33,6 @@ public class BlockSpin : MonoBehaviour
         return true;
     }
 
-    /// <summary>Small wobble that tells the player this block can't turn right now.</summary>
-    public void Nudge()
-    {
-        if (IsBusy) return;
-
-        targetRotation = transform.rotation;
-        StartCoroutine(NudgeRoutine());
-    }
-
-    /// <summary>
-    /// True if <paramref name="point"/> lies over this block's footprint (X/Z only).
-    /// Used to stop a block turning while Ananse is standing on it, which could trap him in a wall.
-    /// </summary>
-    public bool Covers(Vector3 point)
-    {
-        Collider[] colliders = GetComponentsInChildren<Collider>();
-        if (colliders.Length == 0) return false;
-
-        Bounds bounds = colliders[0].bounds;
-        for (int i = 1; i < colliders.Length; i++) bounds.Encapsulate(colliders[i].bounds);
-
-        return point.x > bounds.min.x && point.x < bounds.max.x
-            && point.z > bounds.min.z && point.z < bounds.max.z;
-    }
-
     private IEnumerator TurnRoutine(float duration)
     {
         IsBusy = true;
@@ -73,22 +46,6 @@ public class BlockSpin : MonoBehaviour
 
         // Finish on the exact angle so repeated turns never drift.
         transform.rotation = targetRotation;
-        IsBusy = false;
-    }
-
-    private IEnumerator NudgeRoutine()
-    {
-        IsBusy = true;
-        Quaternion start = transform.rotation;
-
-        for (float t = 0f; t < NudgeDuration; t += Time.deltaTime)
-        {
-            float angle = Mathf.Sin(t / NudgeDuration * Mathf.PI * 2f) * NudgeAngle;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up) * start;
-            yield return null;
-        }
-
-        transform.rotation = start;
         IsBusy = false;
     }
 

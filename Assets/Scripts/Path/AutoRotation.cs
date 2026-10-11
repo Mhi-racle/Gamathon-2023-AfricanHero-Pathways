@@ -28,9 +28,6 @@ public class AutoRotation : MonoBehaviour
         GameManager game = GameManager.Instance;
         if (game == null || !game.IsPlaying) return;
 
-        // Wait for Ananse to step off rather than sweeping a wall through him.
-        if (RotateBlock.IsPlayerOn(spin)) return;
-
         float duration = RotateBlock.Instance != null ? RotateBlock.Instance.TurnDuration : 0.2f;
         if (spin.TryTurn(duration)) speaker.Play();
     }

@@ -12,9 +12,6 @@ public class RotateBlock : MonoBehaviour
     [Tooltip("Seconds a block takes to complete a quarter turn.")]
     [SerializeField] private float turnDuration = 0.2f;
 
-    [Tooltip("Refuse to turn the block Ananse is standing on, so he can't get trapped inside a wall.")]
-    [SerializeField] private bool protectPlayerBlock = true;
-
     [SerializeField] private float maxTapDistance = 500f;
 
     public AudioSource speaker;
@@ -63,24 +60,12 @@ public class RotateBlock : MonoBehaviour
         if (!Physics.Raycast(ray, out RaycastHit hit, maxTapDistance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) return;
         if (!hit.transform.CompareTag(GameConstants.Tags.Block)) return;
 
+        // Blocks may turn with Ananse on them: some levels are solved by riding a block round.
         BlockSpin spin = BlockSpin.For(hit.transform.gameObject);
-        if (protectPlayerBlock && IsPlayerOn(spin))
-        {
-            spin.Nudge();
-            return;
-        }
-
         if (spin.TryTurn(turnDuration) && speaker != null && swoosh != null)
         {
             speaker.PlayOneShot(swoosh);
         }
-    }
-
-    /// <summary>True if Ananse is standing over <paramref name="spin"/>'s block.</summary>
-    public static bool IsPlayerOn(BlockSpin spin)
-    {
-        GameManager game = GameManager.Instance;
-        return game != null && game.player != null && spin.Covers(game.player.transform.position);
     }
 
     private static bool IsOverUI(int pointerId)
