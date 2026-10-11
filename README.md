@@ -12,8 +12,8 @@ Built solo in Unity for PC and Android, with low-end Android phones as the main 
 | Move Ananse | WASD / arrow keys | On-screen joystick |
 | Pause | Esc | Pause button or Back |
 
-- Reach the gourd before the timer hits zero. The timer turns red in the last 10 seconds.
-- A block won't turn while Ananse is standing on it. It wobbles instead, so he can never be trapped inside a wall.
+- Reach the gourd before the timer hits zero.
+- Blocks turn even with Ananse standing on them, and some levels are solved by riding a block round.
 - From Level 11, some blocks **turn by themselves** on a steady beat, so timing matters as much as layout.
 - Ananse comments (cheekily) when you pause, win or lose.
 
@@ -46,7 +46,7 @@ Level N
    ├─ DialogManager / DialogueTrigger   intro conversation (Intro state)
    ├─ Timer                             counts down only while Playing → TimeUp()
    ├─ RotateBlock                       turns tapped blocks (mouse + multi-touch)
-   │    └─ BlockSpin                    eased 90° turn, per-block lock, "blocked" wobble
+   │    └─ BlockSpin                    eased 90° turn, ignores taps until the turn ends
    ├─ AssignAutoRotation → AutoRotation self-turning blocks in later levels
    └─ FunnyRemarksManager               Ananse's lines for pause / win / lose
   PlayerController                      joystick or keyboard movement, camera-relative

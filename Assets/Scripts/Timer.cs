@@ -12,10 +12,6 @@ public class Timer : MonoBehaviour
     [Tooltip("Seconds the player has to reach the gourd.")]
     public int timeLeft = 50;
 
-    [Tooltip("Below this many seconds the timer turns to the warning colour.")]
-    [SerializeField] private int warningSeconds = 10;
-    [SerializeField] private Color warningColor = new Color(0.9f, 0.2f, 0.15f);
-
     private float remaining;
     private int shownSeconds = -1;
     private bool expired;
@@ -46,6 +42,5 @@ public class Timer : MonoBehaviour
 
         shownSeconds = seconds;
         timerText.text = seconds + "s";
-        if (seconds <= warningSeconds) timerText.color = warningColor;
     }
 }
