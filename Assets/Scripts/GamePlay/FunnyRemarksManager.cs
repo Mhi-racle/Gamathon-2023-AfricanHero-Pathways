@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Ananse's cheeky one-liners for the pause, win and lose screens, picked at random.
+/// </summary>
 public class FunnyRemarksManager : MonoBehaviour
 {
-    public static FunnyRemarksManager Instance { set; get; }
+    public static FunnyRemarksManager Instance { get; private set; }
     public TextMeshProUGUI pauseText;
     public TextMeshProUGUI winText;
     public TextMeshProUGUI loseText;
@@ -28,7 +31,7 @@ public class FunnyRemarksManager : MonoBehaviour
         "Good work getting to\nthe gourd.",
         "Gathering wisdom sure is fun.\nDon't worry, I will share it with you.\n",
         "Very soon all the knowledge in the\nworld would be mine.",
-        "Good work.\nSeems Oyankopon sent his best to\nspy on me.",
+        "Good work.\nSeems Onyankopon sent his best to\nspy on me.",
         "Good work getting to the gourd.\nSeems my wisdom is rubbing off\non you.",
         "More wisdom for me, ehem, \nsorry, us.",
         "Great job, you succeeded.\nI'm impressed.",
@@ -46,10 +49,10 @@ public class FunnyRemarksManager : MonoBehaviour
         "Sighh..\nLet's try again, shall we?\n",
         "Oh Onyankopon.\nIs this the best person \nyou could send?\n",
         "Don't feel bad.\nWhen we get all the wisdom I'll make\nyou smarter.",
-        "Don't give up.\nLet's try again. \nWe have alot at stake, me getting\nwiser.",
+        "Don't give up.\nLet's try again. \nWe have a lot at stake, me getting\nwiser.",
         "Let's try again.\nYou are helping the great Ananse,\nsurely you can't falter.",
         ".................\nI'm tired of talking.\n",
-        ".................\nSIgh, let's try again\n",
+        ".................\nSigh, let's try again\n",
         "I will forgive your failure if \nyou try again."
 
     };
@@ -59,22 +62,12 @@ public class FunnyRemarksManager : MonoBehaviour
         Instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public void ShowPauseText() => ShowRandom(pauseText, pauseComments);
+    public void ShowWinText() => ShowRandom(winText, winComments);
+    public void ShowLoseText() => ShowRandom(loseText, loseComments);
 
-    public void ShowPauseText()
+    private static void ShowRandom(TextMeshProUGUI label, string[] lines)
     {
-        pauseText.text = pauseComments[(Random.Range(0, pauseComments.Length))];
-    }
-    public void ShowWinText()
-    {
-        winText.text = winComments[(Random.Range(0, winComments.Length))];
-    }
-    public void ShowLoseText()
-    {
-        loseText.text = loseComments[(Random.Range(0, loseComments.Length))];
+        if (label != null) label.text = lines[Random.Range(0, lines.Length)];
     }
 }
