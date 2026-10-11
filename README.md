@@ -50,7 +50,8 @@ Level N
    ├─ AssignAutoRotation → AutoRotation self-turning blocks in later levels
    └─ FunnyRemarksManager               Ananse's lines for pause / win / lose
   PlayerController                      joystick or keyboard movement, camera-relative
-  target (gourd trigger)                → GameManager.TargetReached()
+  target (gourd trigger)                rise + spin + glow, Ghana-flag confetti burst,
+                                        → GameManager.TargetReached(delay) opens win panel after
   CollectableSpawner                    guide line from Ananse to the gourd
 ```
 

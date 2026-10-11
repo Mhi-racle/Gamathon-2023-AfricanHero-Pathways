@@ -38,9 +38,11 @@ public class CollectableSpawner : MonoBehaviour
         WaitForSeconds wait = new WaitForSeconds(PathUpdateSpeed);
         NavMeshPath path = new NavMeshPath();
 
-        // The gourd is destroyed when collected, which ends the loop.
+        // Stop once the gourd is collected (it rises, then is destroyed).
         while (Prefab != null)
         {
+            if (GameManager.Instance != null && GameManager.Instance.State == GameState.Won) break;
+
             if (NavMesh.CalculatePath(Player.position, Prefab.transform.position, NavMesh.AllAreas, path))
             {
                 int count = path.GetCornersNonAlloc(corners);

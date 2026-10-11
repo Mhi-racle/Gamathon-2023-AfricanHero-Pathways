@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
@@ -163,8 +164,12 @@ public class GameManager : MonoBehaviour
         ShowEndPanel(FailMenu);
     }
 
-    /// <summary>Called when Ananse reaches the gourd. Unlocks the next level straight away.</summary>
-    public void TargetReached()
+    /// <summary>
+    /// Called when Ananse reaches the gourd. Input and the timer stop and the next level is
+    /// unlocked straight away; the win panel opens after <paramref name="panelDelay"/> seconds
+    /// so the gourd's celebration can play first.
+    /// </summary>
+    public void TargetReached(float panelDelay = 0f)
     {
         if (State != GameState.Playing) return;
 
@@ -173,7 +178,15 @@ public class GameManager : MonoBehaviour
 
         FunnyRemarksManager.Instance.ShowWinText();
         if (audioSource != null && congratulatorySound != null) audioSource.PlayOneShot(congratulatorySound);
-        ShowEndPanel(WinMenu);
+
+        if (panelDelay > 0f) StartCoroutine(ShowEndPanelAfter(WinMenu, panelDelay));
+        else ShowEndPanel(WinMenu);
+    }
+
+    private IEnumerator ShowEndPanelAfter(GameObject panel, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ShowEndPanel(panel);
     }
 
     private void ShowEndPanel(GameObject panel)
