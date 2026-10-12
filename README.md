@@ -55,20 +55,6 @@ Level N
   CollectableSpawner                    guide line from Ananse to the gourd
 ```
 
-Design notes:
-
-- **One source of truth for game flow.** Scripts ask `GameManager.Instance.IsPlaying` instead of switching each other on and off, which removes a class of pause, win and dialogue state bugs.
-- **Input is safe to spam.** A block ignores taps while it is turning, taps on UI never reach the maze, and the tap that closes a menu or dialogue is ignored for gameplay.
-- **Mobile first.** Multi-touch lets one thumb hold the joystick while the other rotates blocks. Hot paths avoid per-frame allocations (the timer label only rebuilds when its number changes, and the guide line reuses a buffer).
-- **Names in one place.** Scene names, tags and save keys live in `GameConstants`. Save data goes through `LevelProgress`.
-
-| Folder | Contents |
-|---|---|
-| `Scripts/` | `GameManager`, `GameConstants`, `LevelProgress`, `Timer`, `target`, `BGMusic` |
-| `Scripts/Path/` | Block rotation (`RotateBlock`, `BlockSpin`, `AutoRotation`, `AssignAutoRotation`) and the guide line |
-| `Scripts/Player/` | Ananse's movement and camera helper |
-| `Scripts/GamePlay/` | Dialogue and Ananse's remarks |
-| `Scripts/Menus/` | Main menu and level selection |
 
 ## Tools and technologies
 
