@@ -13,7 +13,11 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
     public Camera cam;
     public float speed = 6f;
-    public float turnSmoothSpeed = 0.1f;
+
+    // Replaces the old "turnSmoothSpeed", which the scenes had set to 20: as a smoothing *time*
+    // that meant 20 seconds to turn, so Ananse never faced the way he walked.
+    [Tooltip("Seconds Ananse takes to turn towards his walking direction. Smaller is snappier.")]
+    [SerializeField] private float turnSmoothTime = 0.08f;
     public Animator playerAnimator;
     public FixedJoystick fixedJoystick;
 
@@ -56,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
         // Angle of the input relative to where the camera is looking.
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothSpeed);
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
         Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
