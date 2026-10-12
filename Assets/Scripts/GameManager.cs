@@ -58,6 +58,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
         Time.timeScale = 1;
 
+        // Some blocks were authored without colliders; patch them before anyone can walk or tap.
+        MazeColliderFixer.AddMissingBlockColliders();
+
         rotateBlock = GetComponent<RotateBlock>();
         if (player != null) playerController = player.GetComponent<PlayerController>();
 
