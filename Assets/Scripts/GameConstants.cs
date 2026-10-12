@@ -20,7 +20,6 @@ public static class GameConstants
     public static class Objects
     {
         public const string MobileControls = "For Mobile";
-        public const string VirtualCamera = "Virtual Camera";
     }
 
     public static class Prefs

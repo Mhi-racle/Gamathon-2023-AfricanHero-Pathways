@@ -70,9 +70,10 @@ public class GameManager : MonoBehaviour
         GameObject mobileControls = GameObject.Find(GameConstants.Objects.MobileControls);
         SetActiveSafe(mobileControls, UseMobileControls);
 
-        // The camera follows Ananse through Cinemachine; the joystick-driven orbit script is not used.
-        GameObject virtualCam = GameObject.Find(GameConstants.Objects.VirtualCamera);
-        if (virtualCam != null && virtualCam.TryGetComponent(out ThirdPersonCam thirdPersonCam))
+        // The camera follows Ananse through Cinemachine. ThirdPersonCam would turn Ananse to face
+        // away from the camera whenever a joystick exists, overriding PlayerController's facing,
+        // so every instance is switched off rather than relying on finding it by name.
+        foreach (ThirdPersonCam thirdPersonCam in FindObjectsByType<ThirdPersonCam>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             thirdPersonCam.enabled = false;
         }
