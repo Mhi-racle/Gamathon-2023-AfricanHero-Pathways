@@ -70,3 +70,11 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Local editor/IDE files
+.vscode/
+*.slnx
+
+# Feel (paid Asset Store package, not used by any scene; licence forbids redistribution)
+/Assets/Feel/
+/Assets/Feel.meta
