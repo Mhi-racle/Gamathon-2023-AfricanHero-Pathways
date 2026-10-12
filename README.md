@@ -46,7 +46,8 @@ Level N
    ├─ DialogManager / DialogueTrigger   intro conversation (Intro state)
    ├─ Timer                             counts down only while Playing → TimeUp()
    ├─ RotateBlock                       turns tapped blocks (mouse + multi-touch)
-   │    └─ BlockSpin                    eased 90° turn, ignores taps until the turn ends
+   │    └─ BlockSpin                    eased 90° turn, ignores taps until the turn ends,
+   │                                    carries Ananse round and keeps walls from passing through him
    ├─ AssignAutoRotation → AutoRotation self-turning blocks in later levels
    └─ FunnyRemarksManager               Ananse's lines for pause / win / lose
   PlayerController                      joystick or keyboard movement, camera-relative
