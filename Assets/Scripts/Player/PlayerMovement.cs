@@ -1,10 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Moves Ananse relative to the camera. Reads the on-screen joystick on mobile and
-/// WASD / arrow keys on PC. Movement is analog (a small push walks slowly, for careful steps in
-/// tight corridors), eases in and out instead of starting and stopping dead, and the walk
-/// animation's pace follows his speed. He turns smoothly to face the way he walks.
+/// Moves Ananse. Two ways to play, at the same time:
+/// <list type="bullet">
+/// <item><b>Auto-walk:</b> as soon as the player's block turns open a clear path to the gourd,
+/// Ananse walks it by himself, so a player who only turns blocks can finish a level.</item>
+/// <item><b>Steering:</b> the on-screen joystick (mobile) or WASD / arrow keys (PC) move him
+/// directly and always take over from auto-walk; useful for levels where he must go partway first.</item>
+/// </list>
+/// Movement is analog (a small push walks slowly), eases in and out, and the walk animation's pace
+/// follows his speed. He always moves through his CharacterController, so walls always block him.
 /// </summary>
 /// <remarks>The file is named PlayerMovement.cs for historical reasons; the class is attached in every level.</remarks>
 public class PlayerController : MonoBehaviour
@@ -14,6 +20,12 @@ public class PlayerController : MonoBehaviour
 
     // Below this fraction of full speed Ananse counts as standing still.
     private const float StillSpeedFraction = 0.05f;
+
+    // How often to check for a clear path while idle (the walk map also triggers a check after every turn).
+    private const float PathCheckSeconds = 0.25f;
+
+    // Give up the current auto-walk if Ananse barely moves for this long (e.g. a block turned into his way).
+    private const float StuckSeconds = 0.4f;
 
     public CharacterController controller;
     public Camera cam;
@@ -43,6 +55,13 @@ public class PlayerController : MonoBehaviour
     [Range(0.1f, 1f)]
     [SerializeField] private float slowestAnimationPace = 0.6f;
 
+    [Header("Auto-walk")]
+    [Tooltip("When the player's turns open a clear path to the gourd, Ananse walks it by himself.")]
+    [SerializeField] private bool autoWalkWhenPathClear = true;
+
+    [Tooltip("How close Ananse must get to each point on his route before heading for the next.")]
+    [SerializeField] private float arriveDistance = 0.04f;
+
     /// <summary>True while Ananse is moving this physics step.</summary>
     public bool isWalking;
 
@@ -50,17 +69,35 @@ public class PlayerController : MonoBehaviour
     private float currentSpeed;
     private Vector3 moveDirection;
 
+    private Transform gourd;
+    private readonly List<Vector3> route = new List<Vector3>();
+    private int routeIndex;
+    private bool followingRoute;
+    private float pathCheckTimer;
+    private float stuckTimer;
+
     private void Start()
     {
         if (cam == null) cam = Camera.main;
 
         // The joystick lives under the "For Mobile" canvas, which is hidden on PC.
         if (fixedJoystick == null) fixedJoystick = FindAnyObjectByType<Joystick>(FindObjectsInactive.Include);
+
+        target gourdTrigger = FindAnyObjectByType<target>();
+        if (gourdTrigger != null) gourd = gourdTrigger.transform;
+    }
+
+    private void OnEnable()
+    {
+        WalkGrid.Rebuilt += CheckSoon;
     }
 
     private void OnDisable()
     {
+        WalkGrid.Rebuilt -= CheckSoon;
+
         // Stop at once when control is taken away (pause, win, lose, dialogue).
+        StopRoute();
         currentSpeed = 0f;
         SetWalking(false);
     }
@@ -79,20 +116,30 @@ public class PlayerController : MonoBehaviour
 
         if (push >= InputDeadZone)
         {
+            // Steering always wins over auto-walk.
+            StopRoute();
+
             // Analog: map the push from just past the dead zone (gentlest) to full.
             float strength = Mathf.InverseLerp(InputDeadZone, 1f, push);
             targetSpeed = speed * Mathf.Lerp(minPushSpeedFraction, 1f, strength);
 
             // Direction relative to where the camera is looking.
             float inputAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-            moveDirection = Quaternion.Euler(0f, inputAngle, 0f) * Vector3.forward;
+            FaceAndHead(Quaternion.Euler(0f, inputAngle, 0f) * Vector3.forward);
+        }
+        else if (autoWalkWhenPathClear)
+        {
+            pathCheckTimer -= Time.deltaTime;
+            if (pathCheckTimer <= 0f) CheckPathToGourd();
 
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, inputAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            if (followingRoute && TryGetRouteDirection(out Vector3 routeDirection))
+            {
+                targetSpeed = speed;
+                FaceAndHead(routeDirection);
+            }
         }
 
-        // Ease towards the target speed; when the stick is released he glides to a quick stop
-        // in the direction he was going.
+        // Ease towards the target speed; when released he glides to a quick stop the way he was going.
         float rampTime = targetSpeed > currentSpeed ? accelerationTime : decelerationTime;
         float rate = speed / Mathf.Max(0.01f, rampTime);
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, rate * Time.deltaTime);
@@ -105,13 +152,93 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        controller.Move(moveDirection * (currentSpeed * Time.deltaTime));
+        Vector3 before = transform.position;
+        float step = currentSpeed * Time.deltaTime;
+        controller.Move(moveDirection * step);
+
+        if (followingRoute) CheckStuck(before, step);
 
         // Match the walk cycle to his pace so his feet don't slide at low speed.
         if (playerAnimator != null)
         {
             playerAnimator.speed = Mathf.Lerp(slowestAnimationPace, 1f, Mathf.InverseLerp(speed * minPushSpeedFraction, speed, currentSpeed));
         }
+    }
+
+    private void FaceAndHead(Vector3 direction)
+    {
+        moveDirection = direction;
+
+        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+    }
+
+    private void CheckSoon()
+    {
+        pathCheckTimer = 0f;
+    }
+
+    /// <summary>
+    /// Starts (or refreshes) the walk to the gourd if a clear path exists, and stops it if a turning
+    /// block has closed the way. Ananse never sets off along a path that doesn't reach the gourd.
+    /// </summary>
+    private void CheckPathToGourd()
+    {
+        pathCheckTimer = PathCheckSeconds;
+        if (gourd == null || WalkGrid.Instance == null) return;
+
+        bool found = WalkGrid.Instance.TryFindPath(transform.position, gourd.position, route, out bool reachesGourd);
+        if (found && reachesGourd)
+        {
+            followingRoute = true;
+            routeIndex = 0;
+        }
+        else
+        {
+            StopRoute();
+        }
+    }
+
+    /// <summary>Direction to the next point on the route; false when there is nowhere left to go.</summary>
+    private bool TryGetRouteDirection(out Vector3 direction)
+    {
+        direction = Vector3.zero;
+        float step = speed * Time.deltaTime;
+
+        while (routeIndex < route.Count)
+        {
+            Vector3 toPoint = route[routeIndex] - transform.position;
+            toPoint.y = 0f;
+
+            if (toPoint.magnitude > Mathf.Max(arriveDistance, step))
+            {
+                direction = toPoint.normalized;
+                return true;
+            }
+
+            routeIndex++;
+        }
+
+        StopRoute();
+        return false;
+    }
+
+    private void CheckStuck(Vector3 before, float step)
+    {
+        Vector3 moved = transform.position - before;
+        moved.y = 0f;
+
+        stuckTimer = moved.magnitude < step * 0.25f ? stuckTimer + Time.deltaTime : 0f;
+        if (stuckTimer > StuckSeconds) StopRoute();
+    }
+
+    private void StopRoute()
+    {
+        followingRoute = false;
+        route.Clear();
+        routeIndex = 0;
+        stuckTimer = 0f;
     }
 
     private void SetWalking(bool walking)

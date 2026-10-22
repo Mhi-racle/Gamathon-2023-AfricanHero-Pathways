@@ -25,6 +25,31 @@ public class BlockSpin : MonoBehaviour
     /// <summary>True while a turn animation is playing.</summary>
     public bool IsBusy { get; private set; }
 
+    /// <summary>Raised when any block finishes a turn, so the walk map around it can be refreshed.</summary>
+    public static event System.Action<BlockSpin> TurnFinished;
+
+    /// <summary>
+    /// The ground a block can cover in any of its four orientations: a square around its pivot.
+    /// Used to refresh only that part of the walk map after it turns.
+    /// </summary>
+    public Bounds SweptBounds()
+    {
+        Vector3 pivot = transform.position;
+        float reach = 0f;
+
+        foreach (Collider col in colliders)
+        {
+            if (col == null) continue;
+
+            Bounds b = col.bounds;
+            reach = Mathf.Max(reach,
+                new Vector2(Mathf.Max(Mathf.Abs(b.min.x - pivot.x), Mathf.Abs(b.max.x - pivot.x)),
+                            Mathf.Max(Mathf.Abs(b.min.z - pivot.z), Mathf.Abs(b.max.z - pivot.z))).magnitude);
+        }
+
+        return new Bounds(new Vector3(pivot.x, 0f, pivot.z), new Vector3(reach * 2f, 0f, reach * 2f));
+    }
+
     /// <summary>Returns the block's <see cref="BlockSpin"/>, adding one the first time.</summary>
     public static BlockSpin For(GameObject block)
     {
@@ -67,6 +92,7 @@ public class BlockSpin : MonoBehaviour
         transform.rotation = targetRotation;
         FollowTurn(player, carryPlayer, previous);
         IsBusy = false;
+        TurnFinished?.Invoke(this);
     }
 
     /// <summary>

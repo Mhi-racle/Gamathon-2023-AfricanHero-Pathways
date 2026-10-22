@@ -61,6 +61,9 @@ public class GameManager : MonoBehaviour
         // Some blocks were authored without colliders; patch them before anyone can walk or tap.
         MazeColliderFixer.AddMissingBlockColliders();
 
+        // The map of where Ananse can stand, for auto-walk and the guide line (after the colliders above exist).
+        if (!TryGetComponent(out WalkGrid _)) gameObject.AddComponent<WalkGrid>();
+
         rotateBlock = GetComponent<RotateBlock>();
         if (player != null) playerController = player.GetComponent<PlayerController>();
 
