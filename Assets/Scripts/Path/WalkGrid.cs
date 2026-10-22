@@ -333,6 +333,30 @@ public class WalkGrid : MonoBehaviour
         return inside;
     }
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// Scene view overlay while playing: green where Ananse fits, red where he doesn't.
+    /// Only shown when Gizmos are enabled in the Scene view.
+    /// </summary>
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying || free == null) return;
+
+        Vector3 size = new Vector3(cellSize * 0.9f, 0.005f, cellSize * 0.9f);
+        Color walkable = new Color(0.1f, 0.9f, 0.2f, 0.35f);
+        Color blocked = new Color(1f, 0.15f, 0.1f, 0.35f);
+
+        for (int z = 0; z < depth; z++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Gizmos.color = free[z * width + x] ? walkable : blocked;
+                Gizmos.DrawCube(CellCentre(x, z) + Vector3.up * 0.02f, size);
+            }
+        }
+    }
+#endif
+
     private Vector3 CellCentre(int x, int z) => origin + new Vector3(x * cellSize, 0f, z * cellSize);
 
     private Vector3 CellCentre(int cell) => CellCentre(cell % width, cell / width);

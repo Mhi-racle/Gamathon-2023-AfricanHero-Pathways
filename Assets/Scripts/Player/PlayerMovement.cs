@@ -189,6 +189,8 @@ public class PlayerController : MonoBehaviour
         if (gourd == null || WalkGrid.Instance == null) return;
 
         bool found = WalkGrid.Instance.TryFindPath(transform.position, gourd.position, route, out bool reachesGourd);
+        LogPathCheck(found, reachesGourd);
+
         if (found && reachesGourd)
         {
             followingRoute = true;
@@ -198,6 +200,38 @@ public class PlayerController : MonoBehaviour
         {
             StopRoute();
         }
+    }
+
+#if UNITY_EDITOR
+    private string lastPathLog;
+#endif
+
+    /// <summary>Editor-only: reports when the auto-walk check changes its mind, to help diagnose levels.</summary>
+    [System.Diagnostics.Conditional("UNITY_EDITOR")]
+    private void LogPathCheck(bool found, bool reachesGourd)
+    {
+#if UNITY_EDITOR
+        string message;
+        if (found && reachesGourd)
+        {
+            message = $"Auto-walk: clear path to the gourd ({route.Count} turns), walking.";
+        }
+        else if (found)
+        {
+            Vector3 gap = route[route.Count - 1] - gourd.position;
+            gap.y = 0f;
+            message = $"Auto-walk: no clear path yet; the furthest Ananse can get is {gap.magnitude:F2} m from the gourd.";
+        }
+        else
+        {
+            message = "Auto-walk: no clear path yet; Ananse is already as close to the gourd as he can get " +
+                      "(or has no walkable spot; check the WalkGrid line and the Scene view overlay).";
+        }
+
+        if (message == lastPathLog) return;
+        lastPathLog = message;
+        Debug.Log(message);
+#endif
     }
 
     /// <summary>Direction to the next point on the route; false when there is nowhere left to go.</summary>
