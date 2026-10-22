@@ -29,9 +29,10 @@ public class WisdomReveal : MonoBehaviour
         Proverb proverb = WisdomLibrary.ForLevel(LevelProgress.CurrentLevel());
         bool hasProverb = proverb != null;
 
-        if (fadeGroup != null) fadeGroup.gameObject.SetActive(hasProverb);
-        if (proverbText != null) proverbText.gameObject.SetActive(hasProverb);
-        if (meaningText != null) meaningText.gameObject.SetActive(hasProverb);
+        // Unity can't toggle this object while it is being enabled, so only toggle children.
+        SetChildActive(fadeGroup, hasProverb);
+        SetChildActive(proverbText, hasProverb);
+        SetChildActive(meaningText, hasProverb);
         if (!hasProverb) return;
 
         if (proverbText != null) proverbText.text = $"“{proverb.Twi}”";
@@ -52,6 +53,11 @@ public class WisdomReveal : MonoBehaviour
         }
 
         SetAlpha(1f);
+    }
+
+    private void SetChildActive(Component target, bool active)
+    {
+        if (target != null && target.gameObject != gameObject) target.gameObject.SetActive(active);
     }
 
     private void SetAlpha(float alpha)
