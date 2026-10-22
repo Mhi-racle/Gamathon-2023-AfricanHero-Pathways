@@ -38,7 +38,7 @@ public class PuzzleCamera : MonoBehaviour
         CinemachineVirtualCamera vcam = FindAnyObjectByType<CinemachineVirtualCamera>();
         if (game == null || game.player == null || gourd == null || vcam == null) return;
 
-        CinemachineTargetGroup group = new GameObject("Ananse and Gourd (camera targets)").AddComponent<CinemachineTargetGroup>();
+        group = new GameObject("Ananse and Gourd (camera targets)").AddComponent<CinemachineTargetGroup>();
         group.AddMember(game.player.transform, 1f, targetRadius);
         // The gourd model bobs in its idle animation; frame its still parent so the camera doesn't bob too.
         Transform gourdAnchor = gourd.transform.parent != null ? gourd.transform.parent : gourd.transform;
@@ -48,13 +48,41 @@ public class PuzzleCamera : MonoBehaviour
         vcam.LookAt = group.transform;
 
         // Replaces the camera's Aim with one that frames the whole group.
-        CinemachineGroupComposer composer = vcam.AddCinemachineComponent<CinemachineGroupComposer>();
-        composer.m_GroupFramingSize = framingSize;
+        composer = vcam.AddCinemachineComponent<CinemachineGroupComposer>();
         composer.m_FramingMode = CinemachineGroupComposer.FramingMode.HorizontalAndVertical;
         composer.m_AdjustmentMode = CinemachineGroupComposer.AdjustmentMode.DollyThenZoom;
-        composer.m_MinimumDistance = minDistance;
-        composer.m_MaximumDistance = maxDistance;
-        composer.m_MinimumFOV = minFieldOfView;
-        composer.m_MaximumFOV = maxFieldOfView;
+        ApplySettings();
     }
+
+    private CinemachineTargetGroup group;
+    private CinemachineGroupComposer composer;
+
+    /// <summary>Pushes the Inspector values to the camera and target group.</summary>
+    private void ApplySettings()
+    {
+        if (composer != null)
+        {
+            composer.m_GroupFramingSize = framingSize;
+            composer.m_MinimumDistance = minDistance;
+            composer.m_MaximumDistance = Mathf.Max(minDistance, maxDistance);
+            composer.m_MinimumFOV = minFieldOfView;
+            composer.m_MaximumFOV = Mathf.Max(minFieldOfView, maxFieldOfView);
+        }
+
+        if (group != null && group.m_Targets.Length >= 2)
+        {
+            group.m_Targets[0].radius = targetRadius;
+            group.m_Targets[1].radius = targetRadius;
+            group.m_Targets[1].weight = gourdWeight;
+        }
+    }
+
+#if UNITY_EDITOR
+    // Editor only: changing a value in the Inspector during Play updates the camera straight away,
+    // so a level's framing can be tuned live. (Play-mode changes are still lost when you stop.)
+    private void OnValidate()
+    {
+        if (Application.isPlaying) ApplySettings();
+    }
+#endif
 }
