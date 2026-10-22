@@ -64,6 +64,9 @@ public class GameManager : MonoBehaviour
         // The map of where Ananse can stand, for auto-walk and the guide line (after the colliders above exist).
         if (!TryGetComponent(out WalkGrid _)) gameObject.AddComponent<WalkGrid>();
 
+        // Keep Ananse and the gourd both in view, so the route being built is always visible.
+        if (!TryGetComponent(out PuzzleCamera _)) gameObject.AddComponent<PuzzleCamera>();
+
         rotateBlock = GetComponent<RotateBlock>();
         if (player != null) playerController = player.GetComponent<PlayerController>();
 
