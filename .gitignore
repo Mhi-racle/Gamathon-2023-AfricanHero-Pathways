@@ -78,3 +78,7 @@ crashlytics-build.properties
 # Feel (paid Asset Store package, not used by any scene; licence forbids redistribution)
 /Assets/Feel/
 /Assets/Feel.meta
+
+# Unity crash-recovery scenes
+/Assets/_Recovery/
+/Assets/_Recovery.meta
