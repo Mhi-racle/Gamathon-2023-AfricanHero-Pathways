@@ -71,6 +71,10 @@ public class GameManager : MonoBehaviour
         SetActiveSafe(FailMenu, false);
 
         GameObject mobileControls = GameObject.Find(GameConstants.Objects.MobileControls);
+
+        // Menu buttons can lose their link to this GameManager when the shared prefabs are edited.
+        MenuButtonRepair.Repair(this, WinMenu, FailMenu, PauseMenu, MainCanvas, mobileControls);
+
         SetActiveSafe(mobileControls, UseMobileControls);
 
         // The camera follows Ananse through Cinemachine. ThirdPersonCam would turn Ananse to face
