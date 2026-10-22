@@ -16,6 +16,8 @@ Built solo in Unity for PC and Android, with low-end Android phones as the main 
 - Blocks turn even with Ananse standing on them, and some levels are solved by riding a block round.
 - From Level 11, some blocks **turn by themselves** on a steady beat, so timing matters as much as layout.
 - Ananse comments (cheekily) when you pause, win or lose.
+- **Every gourd holds a piece of wisdom.** Collecting it reveals an Akan proverb in Twi with its English meaning, and each one is kept in the **Gourds of Wisdom** collection on the main menu.
+- On Android, a light vibration confirms each block turn and a firmer one marks the gourd.
 
 ## Content
 
@@ -54,6 +56,12 @@ Level N
   target (gourd trigger)                rise + spin + glow, Ghana-flag confetti burst,
                                         → GameManager.TargetReached(delay) opens win panel after
   CollectableSpawner                    guide line from Ananse to the gourd
+  WisdomReveal (win panel)              shows the level's proverb from WisdomLibrary
+
+Main Menu
+  WisdomCollectionPanel + WisdomEntryView   Gourds of Wisdom: one row per level, locked until beaten
+
+Haptics                                 short Android vibrations (Vibrator service via JNI)
 ```
 
 
