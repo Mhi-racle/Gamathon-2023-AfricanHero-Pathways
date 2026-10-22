@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     private float currentSpeed;
     private Vector3 moveDirection;
 
-    private Transform gourd;
+    private target gourd;
     private readonly List<Vector3> route = new List<Vector3>();
     private int routeIndex;
     private bool followingRoute;
@@ -83,8 +83,7 @@ public class PlayerController : MonoBehaviour
         // The joystick lives under the "For Mobile" canvas, which is hidden on PC.
         if (fixedJoystick == null) fixedJoystick = FindAnyObjectByType<Joystick>(FindObjectsInactive.Include);
 
-        target gourdTrigger = FindAnyObjectByType<target>();
-        if (gourdTrigger != null) gourd = gourdTrigger.transform;
+        gourd = FindAnyObjectByType<target>();
     }
 
     private void OnEnable()
@@ -188,7 +187,8 @@ public class PlayerController : MonoBehaviour
         pathCheckTimer = PathCheckSeconds;
         if (gourd == null || WalkGrid.Instance == null) return;
 
-        bool found = WalkGrid.Instance.TryFindPath(transform.position, gourd.position, route, out bool reachesGourd);
+        // Aim for anywhere Ananse would touch the gourd's trigger, which is what collects it.
+        bool found = WalkGrid.Instance.TryFindPathToArea(transform.position, gourd.ReachBounds, route, out bool reachesGourd);
         LogPathCheck(found, reachesGourd);
 
         if (found && reachesGourd)
@@ -218,7 +218,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (found)
         {
-            Vector3 gap = route[route.Count - 1] - gourd.position;
+            Vector3 gap = route[route.Count - 1] - gourd.transform.position;
             gap.y = 0f;
             message = $"Auto-walk: no clear path yet; the furthest Ananse can get is {gap.magnitude:F2} m from the gourd.";
         }

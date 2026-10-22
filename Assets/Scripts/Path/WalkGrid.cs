@@ -24,8 +24,10 @@ public class WalkGrid : MonoBehaviour
     // The test capsule starts this far above the floor, so the ground itself never counts as a wall.
     private const float FloorClearance = 0.05f;
 
-    // Slightly slimmer than Ananse, so corridors he can squeeze through stay connected.
-    private const float RadiusFactor = 0.9f;
+    // Slimmer than Ananse, so corridors he can squeeze through stay connected even when no test
+    // point lines up exactly with the corridor's centre. His real collider still stops him at walls.
+    private const float RadiusFactor = 0.75f;
+    private const float CellsPerRadius = 3f;
     private const float MinCellSize = 0.03f;
     private const int MaxCells = 200000;
     private const int OverlapBufferSize = 16;
@@ -116,13 +118,43 @@ public class WalkGrid : MonoBehaviour
 
         // The target itself may test as blocked (e.g. the gourd sits by a wall), so aim for the nearest free spot.
         int goal = TryGetNearestFreeCell(to, out int goalCell) ? goalCell : -1;
-        int end = SearchFrom(start, goal, to);
+        int end = SearchFrom(start, goal, default, false, to);
         reachesTarget = goal >= 0 && end == goal;
         if (end == start) return false;
 
         BuildCellPath(start, end);
         SmoothIntoWaypoints(waypoints);
         return waypoints.Count > 0;
+    }
+
+    /// <summary>
+    /// Finds a route from <paramref name="from"/> to anywhere Ananse would touch <paramref name="area"/>
+    /// (e.g. the gourd's trigger), and reports whether such a spot can be reached. If it can't, the
+    /// route ends at the reachable spot closest to the area. Returns false if there is nowhere to go,
+    /// including when Ananse is already touching the area.
+    /// </summary>
+    public bool TryFindPathToArea(Vector3 from, Bounds area, List<Vector3> waypoints, out bool reachesArea)
+    {
+        waypoints.Clear();
+        reachesArea = false;
+        if (free == null || !TryGetNearestFreeCell(from, out int start)) return false;
+
+        // Ananse touches the area once his body overlaps it, so grow it by his radius.
+        area.Expand(new Vector3(radius * 2f, 0f, radius * 2f));
+
+        int end = SearchFrom(start, -1, area, true, area.center);
+        reachesArea = IsInArea(end, area);
+        if (end == start) return false;
+
+        BuildCellPath(start, end);
+        SmoothIntoWaypoints(waypoints);
+        return waypoints.Count > 0;
+    }
+
+    private bool IsInArea(int cell, Bounds area)
+    {
+        Vector3 c = CellCentre(cell);
+        return c.x >= area.min.x && c.x <= area.max.x && c.z >= area.min.z && c.z <= area.max.z;
     }
 
     private void OnBlockTurned(BlockSpin block)
@@ -146,7 +178,7 @@ public class WalkGrid : MonoBehaviour
 
         radius *= RadiusFactor;
         capsuleTop = Mathf.Max(FloorClearance + radius * 2f, height);
-        cellSize = Mathf.Max(MinCellSize, radius * 0.5f);
+        cellSize = Mathf.Max(MinCellSize, radius / CellsPerRadius);
     }
 
     private void LayOutGrid()
@@ -208,10 +240,11 @@ public class WalkGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// Breadth-first search outwards from <paramref name="start"/>. Returns <paramref name="goal"/>
-    /// if reached, otherwise the reached cell closest to <paramref name="target"/>.
+    /// Breadth-first search outwards from <paramref name="start"/>. Returns <paramref name="goal"/>, or the
+    /// first cell inside <paramref name="goalArea"/> when <paramref name="useGoalArea"/> is set, if reached;
+    /// otherwise the reached cell closest to <paramref name="target"/>.
     /// </summary>
-    private int SearchFrom(int start, int goal, Vector3 target)
+    private int SearchFrom(int start, int goal, Bounds goalArea, bool useGoalArea, Vector3 target)
     {
         for (int i = 0; i < cameFrom.Length; i++) cameFrom[i] = -1;
 
@@ -225,7 +258,7 @@ public class WalkGrid : MonoBehaviour
         while (frontier.Count > 0)
         {
             int cell = frontier.Dequeue();
-            if (cell == goal) return goal;
+            if (cell == goal || (useGoalArea && IsInArea(cell, goalArea))) return cell;
 
             float distance = DistanceSq(cell, target);
             if (distance < closestDistance)

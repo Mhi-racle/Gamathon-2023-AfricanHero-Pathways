@@ -32,6 +32,30 @@ public class target : MonoBehaviour
 
     private bool collected;
 
+    /// <summary>
+    /// The area Ananse has to touch to collect the gourd: its trigger volume(s), or a small box
+    /// around it if it has none. Auto-walk aims for this rather than the gourd's exact centre.
+    /// </summary>
+    public Bounds ReachBounds
+    {
+        get
+        {
+            Bounds area = new Bounds(transform.position, Vector3.one * 0.2f);
+            bool first = true;
+
+            foreach (Collider col in GetComponentsInChildren<Collider>())
+            {
+                if (!col.isTrigger || !col.enabled) continue;
+
+                if (first) area = col.bounds;
+                else area.Encapsulate(col.bounds);
+                first = false;
+            }
+
+            return area;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (collected || !other.CompareTag(GameConstants.Tags.Player)) return;

@@ -29,11 +29,15 @@ public class CollectableSpawner : MonoBehaviour
     [SerializeField] private Color connectedColor = new Color(1f, 0.82f, 0.2f);
 
     private readonly List<Vector3> route = new List<Vector3>();
+    private target gourd;
     private bool connected;
 
     private void Start()
     {
         if (Prefab == null || Player == null || Path == null) return;
+
+        gourd = Prefab.GetComponentInChildren<target>();
+        if (gourd == null) gourd = FindAnyObjectByType<target>();
 
         Path.startColor = connectedColor;
         Path.endColor = connectedColor;
@@ -50,8 +54,9 @@ public class CollectableSpawner : MonoBehaviour
         {
             if (GameManager.Instance != null && GameManager.Instance.State == GameState.Won) break;
 
-            bool clear = WalkGrid.Instance != null
-                      && WalkGrid.Instance.TryFindPath(Player.position, Prefab.transform.position, route, out bool reaches)
+            // Same check Ananse uses to set off: a route to anywhere he'd touch the gourd's trigger.
+            bool clear = WalkGrid.Instance != null && gourd != null
+                      && WalkGrid.Instance.TryFindPathToArea(Player.position, gourd.ReachBounds, route, out bool reaches)
                       && reaches;
 
             if (clear) DrawRoute();
