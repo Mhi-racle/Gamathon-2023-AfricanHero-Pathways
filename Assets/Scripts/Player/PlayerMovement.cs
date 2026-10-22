@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The on-screen joystick. Any Joystick Pack type works (Fixed, Floating, Dynamic, Variable).")]
     public Joystick fixedJoystick;
 
+    [Tooltip("Show the on-screen joystick on mobile. When off, players only turn blocks and Ananse " +
+             "walks by himself once the path is clear (the pause button stays).")]
+    [SerializeField] private bool showJoystick = false;
+
     [Header("Feel")]
     [Tooltip("Speed for the gentlest push, as a fraction of full speed. A full push always gives full speed.")]
     [Range(0f, 1f)]
@@ -82,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
         // The joystick lives under the "For Mobile" canvas, which is hidden on PC.
         if (fixedJoystick == null) fixedJoystick = FindAnyObjectByType<Joystick>(FindObjectsInactive.Include);
+        if (!showJoystick && fixedJoystick != null) fixedJoystick.gameObject.SetActive(false);
 
         gourd = FindAnyObjectByType<target>();
     }
