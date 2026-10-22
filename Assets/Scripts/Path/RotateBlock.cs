@@ -62,10 +62,10 @@ public class RotateBlock : MonoBehaviour
 
         // Blocks may turn with Ananse on them: some levels are solved by riding a block round.
         BlockSpin spin = BlockSpin.For(hit.transform.gameObject);
-        if (spin.TryTurn(turnDuration) && speaker != null && swoosh != null)
-        {
-            speaker.PlayOneShot(swoosh);
-        }
+        if (!spin.TryTurn(turnDuration)) return;
+
+        Haptics.Tap();
+        if (speaker != null && swoosh != null) speaker.PlayOneShot(swoosh);
     }
 
     private static bool IsOverUI(int pointerId)

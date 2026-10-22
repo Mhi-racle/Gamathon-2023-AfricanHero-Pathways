@@ -41,6 +41,7 @@ public class target : MonoBehaviour
         if (game == null || !game.IsPlaying) return;
 
         collected = true;
+        Haptics.Reward();
         game.TargetReached(riseDuration + vanishDuration + winPanelDelay);
         StartCoroutine(CollectRoutine());
     }
