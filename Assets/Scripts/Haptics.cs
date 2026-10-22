@@ -13,13 +13,13 @@ public static class Haptics
     /// <summary>A firmer pulse, e.g. when the gourd is collected.</summary>
     public const long RewardMilliseconds = 60;
 
+#if UNITY_ANDROID && !UNITY_EDITOR
     // Never true. The reference to Handheld.Vibrate below is what makes Unity add the
-    // VIBRATE permission to the Android manifest.
+    // VIBRATE permission to the Android manifest. (Handheld only exists on mobile platforms.)
 #pragma warning disable 0649 // Deliberately never assigned.
     private static bool addVibratePermission;
 #pragma warning restore 0649
 
-#if UNITY_ANDROID && !UNITY_EDITOR
     private const int OreoApiLevel = 26;
     private const int DefaultAmplitude = -1;
 
@@ -34,9 +34,9 @@ public static class Haptics
 
     public static void Vibrate(long milliseconds)
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
         if (addVibratePermission) Handheld.Vibrate();
 
-#if UNITY_ANDROID && !UNITY_EDITOR
         try
         {
             if (!initialised) Initialise();
