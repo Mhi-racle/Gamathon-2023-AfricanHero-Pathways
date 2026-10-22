@@ -20,7 +20,7 @@ public class WisdomReveal : MonoBehaviour
     [SerializeField] private CanvasGroup fadeGroup;
 
     [Tooltip("Seconds after the win panel opens before the proverb starts to appear.")]
-    [SerializeField] private float revealDelay = 1.2f;
+    [SerializeField] private float revealDelay = 2f;
 
     [SerializeField] private float fadeDuration = 0.6f;
 
