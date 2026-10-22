@@ -21,11 +21,11 @@ public class PuzzleCamera : MonoBehaviour
 
     [Tooltip("Fraction of the screen the two should fill (smaller = more room around them).")]
     [Range(0.2f, 1f)]
-    [SerializeField] private float framingSize = 0.7f;
+    [SerializeField] private float framingSize = 0.5f;
 
     [Tooltip("Closest and furthest the camera may move to keep both in frame.")]
-    [SerializeField] private float minDistance = 1.5f;
-    [SerializeField] private float maxDistance = 10f;
+    [SerializeField] private float minDistance = 2.5f;
+    [SerializeField] private float maxDistance = 15f;
 
     [Tooltip("Narrowest and widest the camera may zoom once it can't move any further.")]
     [SerializeField] private float minFieldOfView = 25f;
