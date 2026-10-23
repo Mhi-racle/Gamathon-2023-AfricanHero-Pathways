@@ -1743,7 +1743,7 @@ PrefabInstance:
     - target: {fileID: 6006676095394423351, guid: 28aa0ff8fe3204dd7b5b278bb5c4f306,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.174
+      value: 0.718
       objectReference: {fileID: 0}
     - target: {fileID: 6006676095394423351, guid: 28aa0ff8fe3204dd7b5b278bb5c4f306,
         type: 3}
@@ -3116,6 +3116,13 @@ MonoBehaviour:
   turnSmoothTime: 0.08
   playerAnimator: {fileID: 1539379968}
   fixedJoystick: {fileID: 0}
+  showJoystick: 0
+  minPushSpeedFraction: 0.35
+  accelerationTime: 0.12
+  decelerationTime: 0.08
+  slowestAnimationPace: 0.6
+  autoWalkWhenPathClear: 1
+  arriveDistance: 0.04
   isWalking: 0
 --- !u!143 &1539379970
 CharacterController:
@@ -4267,6 +4274,7 @@ MonoBehaviour:
   Path: {fileID: 372486126}
   pathHeightOffset: 0.1
   PathUpdateSpeed: 0.25
+  connectedColor: {r: 1, g: 0.82, b: 0.2, a: 1}
 --- !u!4 &2115062773
 Transform:
   m_ObjectHideFlags: 0
@@ -4311,7 +4319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 2127339914}
-  timeLeft: 10
+  timeLeft: 15
 --- !u!114 &2115062776
 MonoBehaviour:
   m_ObjectHideFlags: 0

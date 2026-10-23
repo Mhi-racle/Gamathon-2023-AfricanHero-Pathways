@@ -316,7 +316,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 50
+  far clip plane: 10
   field of view: 60
   orthographic: 0
   orthographic size: 10
@@ -2432,7 +2432,7 @@ PrefabInstance:
     - target: {fileID: 6006676095394423351, guid: 28aa0ff8fe3204dd7b5b278bb5c4f306,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.06
+      value: 0.014
       objectReference: {fileID: 0}
     - target: {fileID: 6006676095394423351, guid: 28aa0ff8fe3204dd7b5b278bb5c4f306,
         type: 3}
@@ -2442,7 +2442,7 @@ PrefabInstance:
     - target: {fileID: 6006676095394423351, guid: 28aa0ff8fe3204dd7b5b278bb5c4f306,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.659
+      value: 0.484
       objectReference: {fileID: 0}
     - target: {fileID: 6006676095394423351, guid: 28aa0ff8fe3204dd7b5b278bb5c4f306,
         type: 3}
@@ -2616,6 +2616,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Win Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4390184867402719691, guid: 4b4709e3877f04338bc48aa47b120afa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6489038365880748273, guid: 4b4709e3877f04338bc48aa47b120afa,
         type: 3}
@@ -3316,6 +3321,13 @@ MonoBehaviour:
   turnSmoothTime: 0.08
   playerAnimator: {fileID: 1539379968}
   fixedJoystick: {fileID: 0}
+  showJoystick: 0
+  minPushSpeedFraction: 0.35
+  accelerationTime: 0.12
+  decelerationTime: 0.08
+  slowestAnimationPace: 0.6
+  autoWalkWhenPathClear: 1
+  arriveDistance: 0.04
   isWalking: 0
 --- !u!143 &1539379970
 CharacterController:
@@ -3441,7 +3453,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 50
+    FarClipPlane: 10
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -4011,6 +4023,7 @@ GameObject:
   - component: {fileID: 2115062777}
   - component: {fileID: 2115062778}
   - component: {fileID: 2115062779}
+  - component: {fileID: 2115062780}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4035,6 +4048,7 @@ MonoBehaviour:
   Path: {fileID: 372486126}
   pathHeightOffset: 0.1
   PathUpdateSpeed: 0.25
+  connectedColor: {r: 1, g: 0.82, b: 0.2, a: 1}
 --- !u!4 &2115062773
 Transform:
   m_ObjectHideFlags: 0
@@ -4079,7 +4093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 2127339914}
-  timeLeft: 10
+  timeLeft: 20
 --- !u!114 &2115062776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4159,6 +4173,25 @@ MonoBehaviour:
   pauseText: {fileID: 2063817609}
   winText: {fileID: 1089859857}
   loseText: {fileID: 7218227448475908483}
+--- !u!114 &2115062780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115062771}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3b7bcd12721484cb97e8fb20146112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleCamera
+  gourdWeight: 1
+  targetRadius: 0.25
+  framingSize: 0.2
+  minDistance: 3
+  maxDistance: 15
+  minFieldOfView: 25
+  maxFieldOfView: 60
 --- !u!1 &2127339912
 GameObject:
   m_ObjectHideFlags: 0
